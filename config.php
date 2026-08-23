@@ -17,19 +17,17 @@
 /**
  * Theme OBIN - configuration.
  *
- * Thème enfant de Boost : on ne redéfinit PAS $THEME->layouts dans son
- * ensemble. Moodle fait hériter automatiquement d'un thème enfant les
- * gabarits (layouts) de son parent quand ils ne sont pas explicitement
- * redéfinis dans son propre config.php (voir theme_config::__construct()
- * dans lib/outputlib.php - la fusion se fait clé par clé) - c'est le
- * fonctionnement standard des thèmes "enfants de Boost" les plus simples,
- * qui ne changent que la palette et la typographie sans toucher à la
- * structure des pages.
+ * Boost child theme: $THEME->layouts is NOT redefined wholesale. Moodle
+ * automatically inherits a child theme's parent layouts for any key not
+ * explicitly overridden in config.php (see theme_config::__construct() in
+ * lib/outputlib.php — the merge is key-by-key). This is the standard
+ * behaviour for simple Boost child themes that only change the colour
+ * palette and typography without altering page structure.
  *
- * Seule exception : le layout 'frontpage' (page d'accueil, visiteurs non
- * connectés) est surchargé pour y ajouter une bannière photo + slogan
- * (voir layout/frontpage.php et templates/frontpage.mustache). Toutes les
- * autres pages du site continuent d'utiliser les layouts de Boost tels quels.
+ * The only exception is the 'frontpage' layout (home page, logged-out
+ * visitors), which is overridden to add a photo banner and tagline (see
+ * layout/frontpage.php and templates/frontpage.mustache). All other pages
+ * continue to use Boost's layouts unchanged.
  *
  * @package    theme_obin
  * @copyright  2026 Citoyenneté et Inclusion Numérique (OBIN) <contact@obin-asso.fr>

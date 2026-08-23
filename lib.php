@@ -39,12 +39,11 @@ function theme_obin_get_main_scss_content($theme) {
 }
 
 /**
- * SCSS injecté AVANT la compilation du preset Boost : c'est ici qu'on
- * remplace les variables Bootstrap par défaut par celles de la charte
- * graphique officielle "Citoyenneté et Inclusion Numérique"
- * (Charte_Graphique_OBIN.pdf v1.0, juin 2026). Couleurs et police
- * configurables depuis Administration du site > Apparence > OBIN
- * (voir settings.php), avec ces valeurs de la charte comme défaut.
+ * SCSS injected BEFORE the Boost preset compilation: this is where Bootstrap
+ * default variables are replaced with those from the official OBIN graphic
+ * charter (Charte_Graphique_OBIN.pdf v1.0, June 2026). Colours and font
+ * are configurable via Site administration > Appearance > OBIN (see
+ * settings.php), with the charter values as defaults.
  *
  * @param theme_config $theme
  * @return string
@@ -55,21 +54,19 @@ function theme_obin_get_pre_scss($theme) {
     $brandcolor = !empty($theme->settings->brandcolor) ? $theme->settings->brandcolor : '#3D8FE8';
     $secondarycolor = !empty($theme->settings->secondarycolor) ? $theme->settings->secondarycolor : '#64D6A8';
 
-    // Couleurs primaires de la charte.
-    $scss .= '$primary: ' . $brandcolor . ";\n";       // Bleu OBIN.
-    $scss .= '$success: ' . $secondarycolor . ";\n";   // Vert-Teal.
-    $scss .= '$info: #4CBFD1;' . "\n";                 // Cyan Accent.
+    // Brand primary colours.
+    $scss .= '$primary: ' . $brandcolor . ";\n";       // OBIN blue.
+    $scss .= '$success: ' . $secondarycolor . ";\n";   // Teal green.
+    $scss .= '$info: #4CBFD1;' . "\n";                 // Cyan accent.
 
-    // Neutres de la charte : noir texte (jamais #000000 pur), gris clair
-    // pour les fonds de section/cartes.
+    // Brand neutrals: text black (never pure #000000), light grey for section/card backgrounds.
     $scss .= '$body-color: #111827;' . "\n";
     $scss .= '$gray-100: #F3F4F6;' . "\n";
     $scss .= '$gray-700: #374151;' . "\n";
     $scss .= '$gray-600: #9CA3AF;' . "\n";
 
-    // Typographie de la charte : Poppins pour les titres, Lato pour le
-    // corps de texte. Chargées depuis Google Fonts (voir extrascss ci-dessous
-    // pour l'import @import, requis avant utilisation des font-family).
+    // Brand typography: Poppins for headings, Lato for body text. Loaded from Google Fonts
+    // (see extra SCSS callback; the @import must come before any font-family use).
     $scss .= '$font-family-sans-serif: "Lato", -apple-system, BlinkMacSystemFont,'
         . ' "Segoe UI", Roboto, Arial, sans-serif;' . "\n";
     $scss .= '$headings-font-family: "Poppins", "Lato", sans-serif;' . "\n";
@@ -83,9 +80,9 @@ function theme_obin_get_pre_scss($theme) {
 }
 
 /**
- * SCSS injecté APRÈS la compilation du preset Boost : règles complémentaires
- * qui ne sont pas de simples variables Bootstrap (import de police, dégradé
- * de marque, amélioration d'accessibilité du focus clavier).
+ * Extra SCSS injected AFTER the Boost preset compilation: supplementary rules
+ * that are not simple Bootstrap variables (font import, brand gradient,
+ * keyboard-focus accessibility improvement).
  *
  * @param theme_config $theme
  * @return string
@@ -96,12 +93,12 @@ function theme_obin_get_extra_scss($theme) {
 
     $content = '
 /*
- * Dégradé officiel teal -> bleu (sens inversé à la demande, cf. mission
- * OBIN). La charte réserve ce dégradé "au logo et aux éléments graphiques
- * forts" (titres, boutons CTA, accents) - pas d\'usage généralisé. Appliqué
- * donc seulement à la barre de navigation et aux boutons primaires. Le
- * dégradé de la barre est animé légèrement ("effet wouah" demandé sur le
- * menu) via un fond agrandi (200%) dont on fait glisser la position.
+ * Official teal → blue gradient (direction reversed per OBIN's brand guidelines).
+ * The charter reserves this gradient "for the logo and strong graphic elements"
+ * (headings, CTA buttons, accents) — not for general use. Applied only to
+ * the navbar and primary buttons. The navbar gradient is subtly animated
+ * (requested "wow effect" on the menu) via an oversized background (200%)
+ * whose position is shifted.
  */
 .navbar.fixed-top {
     background: linear-gradient(90deg, ' . $secondarycolor . ' 0%, ' . $brandcolor . ' 100%) !important;
@@ -125,20 +122,19 @@ function theme_obin_get_extra_scss($theme) {
 }
 
 /*
- * Le logo (Administration du site > Apparence > Logos) est fourni par
- * chaque structure qui installe ce thème : format et proportions varient
- * (logo très large, très haut, carré...). Seule la TAILLE est bornée
- * (objet contenu dans un gabarit fixe, proportions gardées).
+ * The logo (Site administration > Appearance > Logos) is provided by each
+ * organisation that installs this theme: format and proportions vary (very
+ * wide, very tall, square...). Only the SIZE is constrained (object fitted
+ * inside a fixed frame, proportions preserved).
  *
- * Dans la navbar, le logo repose sur le dégradé de marque : quelle que
- * soit sa couleur d\'origine (le fichier déposé peut être sombre, coloré...),
- * on le fait passer en silhouette BLANCHE via un filtre CSS
- * (brightness(0) = tout en noir, invert(1) = noir -> blanc), pour qu\'il
- * reste lisible sur n\'importe quelle portion du dégradé animé, cohérent
- * avec le texte de la navbar déjà forcé en blanc plus bas. Même technique
- * déjà utilisée pour le logo Moodle du pied de page (.obin-footer-moodlelogo).
- * Le fond doit être transparent (PNG) pour un rendu propre - un fond blanc
- * opaque deviendrait un simple rectangle blanc plein une fois inversé.
+ * In the navbar, the logo sits on the brand gradient: whatever its original
+ * colour (the uploaded file may be dark, coloured...), it is converted to a
+ * WHITE silhouette via a CSS filter (brightness(0) = all black, invert(1) =
+ * black → white), so it remains readable across any part of the animated
+ * gradient, consistent with the navbar text already forced white below.
+ * Same technique as the Moodle footer logo (.obin-footer-moodlelogo).
+ * The background must be transparent (PNG) for a clean result — an opaque
+ * white background would become a plain white rectangle once inverted.
  */
 .navbar-brand .logo,
 .navbar-brand img {
@@ -149,9 +145,9 @@ function theme_obin_get_extra_scss($theme) {
     filter: brightness(0) invert(1);
 }
 /*
- * Page de connexion : fond BLANC (cf. règles plus bas), pas le dégradé - on
- * y garde donc le logo dans ses couleurs d\'origine (le filtre blanc ci-dessus
- * le rendrait invisible sur un fond clair).
+ * Login page: WHITE background (see rules below), not the gradient — the logo
+ * is therefore kept in its original colours (the white filter above would make
+ * it invisible against a light background).
  */
 body.pagelayout-login #logoimage,
 body.pagelayout-login .login-logo img {
@@ -162,11 +158,11 @@ body.pagelayout-login .login-logo img {
 }
 
 /*
- * Contraste sur le dégradé : Boost part du principe d\'une navbar blanche
- * ("navbar-light") et colore ses liens/textes en bleu marque - ce qui les
- * rend illisibles (voire invisibles) une fois la navbar habillée du
- * dégradé de couleur. On force donc un texte blanc dans toute la navbar,
- * quelle que soit la portion du dégradé sur laquelle il se trouve.
+ * Contrast on the gradient: Boost assumes a white navbar ("navbar-light") and
+ * colours its links/text in brand blue — which makes them unreadable (or even
+ * invisible) once the navbar is dressed in the colour gradient. We therefore
+ * force white text throughout the entire navbar, regardless of which part of
+ * the gradient it sits on.
  */
 .navbar.fixed-top,
 .navbar.fixed-top .nav-link,
@@ -183,11 +179,11 @@ body.pagelayout-login .login-logo img {
 }
 
 /*
- * "Mode d\'édition" signalé illisible malgré l\'ombre portée ci-dessus (la
- * portion la plus claire du dégradé animé reste trop proche du blanc pour
- * qu\'une simple ombre suffise). Fond sombre semi-transparent en plus,
- * pour un contraste garanti à tout instant de l\'animation, quelle que soit
- * la couleur exacte du dégradé à cet endroit.
+ * The edit-mode toggle was reported as unreadable despite the text-shadow above
+ * (the lightest portion of the animated gradient is too close to white for a
+ * shadow alone to suffice). A semi-transparent dark background is added to
+ * guarantee contrast at any moment of the animation, regardless of the exact
+ * gradient colour at that point.
  */
 .navbar.fixed-top .editmode-switch-form {
     background-color: rgba(17, 24, 39, .55);
@@ -196,12 +192,12 @@ body.pagelayout-login .login-logo img {
 }
 
 /*
- * Un vieux style coeur Moodle générique (":focus") pose un fond BLANC uni
- * sur n\'importe quel élément au focus (ex. le lien "Connexion", qui n\'est
- * ni ".nav-link" ni ".dropdown-menu a" et n\'était donc couvert par aucune
- * des règles ci-dessus) : combiné à notre texte blanc, ça devient
- * illisible au focus/clic. On neutralise ce fond blanc dans toute la
- * navbar et on retombe sur le même style de focus que les onglets du menu.
+ * An old Moodle core generic ":focus" rule applies a plain WHITE background to
+ * any focused element (e.g. the "Log in" link, which is neither ".nav-link" nor
+ * ".dropdown-menu a" and was therefore not covered by any rule above): combined
+ * with our white text, this becomes unreadable on focus/click. We neutralise
+ * that white background throughout the navbar and fall back to the same focus
+ * style as the menu tabs.
  */
 .navbar.fixed-top a:focus {
     background-color: rgba(255, 255, 255, .18);
@@ -211,20 +207,18 @@ body.pagelayout-login .login-logo img {
 }
 
 /*
- * Les menus déroulants et popovers (notifications "cloche", messages, menu
- * utilisateur "JG"...) sont imbriqués dans <nav class="navbar fixed-top"> au
- * niveau du DOM, mais s\'affichent en pop-up sur fond BLANC, pas sur le
- * dégradé. Les règles ci-dessus (texte blanc + ombre dans toute la navbar)
- * les rendaient entièrement illisibles : texte blanc sur fond blanc. On leur
- * restitue une couleur de texte normale et on retire l\'ombre, quel que soit
- * l\'état (repos/survol/focus). Deux composants différents à couvrir :
- * ".dropdown-menu" (Bootstrap, ex. menu utilisateur) et
- * ".popover-region-container" (composant Moodle, panneau du popover
- * notifications/messages - PAS ".popover-region" tout court, qui englobe
- * aussi le bouton "cloche"/"messages" lui-même : ce bouton, lui, doit rester
- * blanc puisqu\'il est posé sur le dégradé, pas sur un fond blanc - bug
- * initialement constaté sur l\'icône de la cloche, invisible une fois
- * capturée à tort par cette règle).
+ * Dropdowns and popovers (bell notifications, messages, user menu...) are
+ * nested inside <nav class="navbar fixed-top"> in the DOM, but appear as
+ * pop-ups on a WHITE background, not on the gradient. The rules above (white
+ * text + shadow throughout the navbar) made them completely unreadable: white
+ * text on white background. We restore normal text colour and remove the shadow,
+ * in all states (default/hover/focus). Two different components to cover:
+ * ".dropdown-menu" (Bootstrap, e.g. user menu) and
+ * ".popover-region-container" (Moodle component, notifications/messages panel —
+ * NOT ".popover-region" itself, which also wraps the bell/messages button: that
+ * button must stay white since it sits on the gradient, not a white background —
+ * bug originally noticed on the bell icon, which became invisible when
+ * accidentally matched by this rule).
  */
 .navbar.fixed-top .dropdown-menu,
 .navbar.fixed-top .dropdown-menu a,
@@ -245,12 +239,12 @@ body.pagelayout-login .login-logo img {
 }
 
 /*
- * Le survol/focus des onglets du menu (.moremenu) hérite d\'une règle
- * coeur Moodle qui pose un fond gris clair ($gray-100, #F3F4F6) et une
- * bordure active bleue - lisibles sur une navbar blanche, mais illisibles
- * ici : texte blanc sur fond quasi-blanc, et bordure bleue invisible sur
- * la portion bleue du dégradé. On remplace par un survol blanc translucide
- * qui reste cohérent quel que soit l\'endroit du dégradé.
+ * Hover/focus on menu tabs (.moremenu) inherits a Moodle core rule that applies
+ * a light grey background ($gray-100, #F3F4F6) and an active blue border —
+ * readable on a white navbar, but unreadable here: white text on near-white
+ * background, and blue border invisible over the blue portion of the gradient.
+ * Replaced with a translucent white hover that remains consistent wherever the
+ * gradient is.
  */
 .navbar.fixed-top .nav-link:hover,
 .navbar.fixed-top .nav-link:focus,
@@ -262,9 +256,9 @@ body.pagelayout-login .login-logo img {
 }
 
 /*
- * Pictos de la navbar (langue, bascule menu, etc.) : la règle générale plus
- * bas (".icon" en bleu marque) les rendrait bleus sur fond bleu - illisible.
- * On les garde blancs ici, quelle que soit la portion du dégradé.
+ * Navbar icons (language switcher, menu toggle, etc.): the general rule below
+ * (".icon" in brand blue) would render them blue on a blue background —
+ * unreadable. They are kept white here, regardless of the gradient portion.
  */
 .navbar.fixed-top .icon,
 .navbar.fixed-top .dropdown-toggle::after {
@@ -272,9 +266,9 @@ body.pagelayout-login .login-logo img {
 }
 
 /*
- * Effet "wouah" sur le menu principal : léger effet de lévitation au survol
- * et soulignement animé en blanc (plus lisible que le bleu par défaut sur
- * un fond dégradé coloré, notamment sur sa portion bleue).
+ * "Wow effect" on the main menu: subtle hover lift and animated white underline
+ * (more readable than the default blue on a coloured gradient background,
+ * especially over its blue portion).
  */
 .navbar .nav-link {
     position: relative;
@@ -285,11 +279,11 @@ body.pagelayout-login .login-logo img {
 }
 .navbar .nav-link.active {
     /*
-     * Boost pose "color: rgba(0,0,0,.9)" (texte quasi noir) sur l\'onglet
-     * actif via ".navbar-light .navbar-nav .nav-link.active" - plus
-     * spécifique que nos règles de couleur blanche ci-dessus. !important
-     * ici plutôt que d\'empiler encore des classes, ce cas précis étant
-     * ponctuel et bien identifié (contrairement au reste de la feuille).
+     * Boost sets "color: rgba(0,0,0,.9)" (near-black text) on the active tab
+     * via ".navbar-light .navbar-nav .nav-link.active" — more specific than our
+     * white colour rules above. !important used here rather than stacking more
+     * classes, as this is a one-off, well-identified case (unlike the rest of
+     * the stylesheet).
      */
     color: #fff !important;
     border-bottom-color: transparent;
@@ -313,16 +307,15 @@ body.pagelayout-login .login-logo img {
 }
 
 /*
- * Sur la page d\'accueil, le titre "Theme Obin" (nom du site, affiché par
- * défaut par Boost via le bandeau de page standard) fait doublon avec le
- * titre de la bannière ci-dessous : on le masque uniquement quand la
- * bannière s\'affiche réellement (classe "obin-hero-active", posée par
- * layout/frontpage.php seulement pour les visiteurs non connectés - donc
- * sans effet sur le reste du site ni sur un éventuel accès connecté à cette
- * même page). On referme aussi l\'espace ainsi libéré en haut de page
- * (".main-inner" a son propre padding/margin-top de 24px chacun, prévus
- * pour aérer sous le titre normalement affiché - un blanc vide subsistait
- * sinon entre la navbar et la bannière).
+ * On the front page, the site-name heading ("Theme Obin", displayed by default
+ * by Boost via the standard page header) duplicates the banner title below: it
+ * is hidden only when the banner is actually shown (class "obin-hero-active",
+ * set by layout/frontpage.php only for logged-out visitors — no effect on the
+ * rest of the site or on a logged-in visit to the same page). The space freed
+ * up at the top of the page is also collapsed (".main-inner" has its own
+ * padding/margin-top of 24px each, intended to add breathing room below the
+ * normally-displayed title — an empty gap would otherwise remain between the
+ * navbar and the banner).
  */
 body.obin-hero-active .page-context-header {
     display: none;
@@ -333,14 +326,13 @@ body.obin-hero-active #topofscroll.main-inner {
 }
 
 /*
- * Bannière (hero) de la page d\'accueil pour les visiteurs non connectés :
- * photo + overlay dégradé de marque + slogan officiel de la charte,
- * au-dessus du contenu habituel (résumé du site + cours disponibles) qui
- * reste inchangé en dessous. Pleine largeur de viewport et responsive :
- * la technique margin/width en calc() fait sortir la bannière de toute
- * largeur maximale imposée par les conteneurs parents (".limitedwidth"...),
- * quel que soit leur niveau d\'imbrication.
- * Cf. layout/frontpage.php et templates/frontpage.mustache.
+ * Front-page hero banner for logged-out visitors: photo + brand gradient
+ * overlay + official charter tagline, above the standard content (site
+ * summary + available courses) which remains unchanged below. Full viewport
+ * width and responsive: the calc() margin/width technique breaks the banner
+ * out of any maximum width imposed by parent containers (".limitedwidth"...),
+ * regardless of their nesting level.
+ * See layout/frontpage.php and templates/frontpage.mustache.
  */
 .obin-hero {
     position: relative;
@@ -390,10 +382,10 @@ body.obin-hero-active #topofscroll.main-inner {
 }
 
 /*
- * Mini-formulaire de connexion accessible directement depuis le menu de la
- * page d\'accueil (au lieu de rediriger vers /login/index.php) : panneau
- * masqué par défaut, affiché/masqué en cliquant sur le lien "Connexion" de
- * la navbar (cf. templates/frontpage.mustache pour le script de bascule).
+ * Inline login form accessible directly from the front-page navbar (instead of
+ * redirecting to /login/index.php): panel hidden by default, toggled by clicking
+ * the "Log in" link in the navbar (see templates/frontpage.mustache for the
+ * toggle script).
  */
 .obin-navbar-login {
     display: none;
@@ -730,31 +722,13 @@ body.pagelayout-login .login-container::before {
     return $content;
 }
 
-/**
- * Injecte les liens Google Fonts dans le <head>.
- *
- * Ne PAS faire cet import via `@import url(...)` dans le SCSS : scssphp
- * (bibliothèque utilisée par ce Moodle) ne reconnaît pas de façon fiable un
- * `@import url("https://...")` ajouté via append_raw_scss() comme un simple
- * passthrough CSS - il tente de le résoudre comme un fichier SCSS local, ce
- * qui fait échouer silencieusement toute la compilation (get_css_content_from_scss()
- * catch l'exception et retombe sur le CSS par défaut de Boost, sans erreur
- * visible). Résultat observé : plus aucune personnalisation du thème
- * (couleurs, dégradé, polices) n'était appliquée. D'où l'injection en HTML.
- *
- * @return string
- */
-function theme_obin_before_standard_html_head() {
-    return '<link rel="preconnect" href="https://fonts.googleapis.com">'
-        . '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-        . '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap">';
-}
+// Google Fonts injection is now handled via the Hook API.
+// See classes/hook/output/before_standard_html_head.php and db/hooks.php.
 
 /**
- * URL de la photo de bannière de la page d'accueil : celle déposée par
- * l'administrateur (Apparence > OBIN > "Photo de bannière") si elle existe,
- * sinon la photo par défaut d'OBIN fournie avec le thème (pix/hero.jpg) -
- * remplacée dès qu'une structure dépose la sienne.
+ * Returns the URL of the front-page banner photo: the one uploaded by the
+ * administrator (Appearance > OBIN > "Banner photo") if set, otherwise the
+ * default photo bundled with the theme (pix/hero.jpg).
  *
  * @return string
  */
@@ -771,9 +745,9 @@ function theme_obin_get_hero_image_url() {
 }
 
 /**
- * Sert le fichier de la photo de bannière déposée par l'administrateur
- * (réglage "heroimage", cf. settings.php), selon le même mécanisme que
- * "backgroundimage" dans theme_boost.
+ * Serves the banner photo file uploaded by the administrator
+ * (setting "heroimage", see settings.php), following the same mechanism as
+ * "backgroundimage" in theme_boost.
  *
  * @param stdClass $course
  * @param stdClass $cm
@@ -797,15 +771,13 @@ function theme_obin_pluginfile($course, $cm, $context, $filearea, $args, $forced
 }
 
 /**
- * Liens du pied de page, tels que configurés par l'administrateur (réglage
- * "footerlinks", cf. settings.php) : une ligne par lien, au format
- * "Libellé|URL". Format volontairement simple (pas de sous-champs répétés,
- * non supportés nativement par l'API de réglages Moodle) pour que
- * n'importe quelle structure utilisant ce thème puisse ajouter ses propres
- * liens (mentions légales, politique de confidentialité, réseaux sociaux...)
- * sans toucher au code.
+ * Returns footer links as configured by the administrator (setting "footerlinks",
+ * see settings.php): one link per line, in "Label|URL" format. Intentionally
+ * simple (no repeated sub-fields, not natively supported by Moodle's settings API)
+ * so that any organisation using this theme can add its own links (legal notices,
+ * privacy policy, social media...) without touching any code.
  *
- * @return array Liste de ['label' => string, 'url' => string]
+ * @return array List of ['label' => string, 'url' => string]
  */
 function theme_obin_get_footer_links() {
     $raw = get_config('theme_obin', 'footerlinks');
@@ -833,10 +805,10 @@ function theme_obin_get_footer_links() {
 }
 
 /**
- * Nettoie/formate un bloc de contenu libre de la page d'accueil (réglages
- * "frontblock1"/"frontblock2", cf. settings.php) : simple mise en forme
- * HTML (paragraphes, liens...), pas un éditeur riche complet - suffisant
- * pour un texte de présentation, un lien, un chiffre-clé...
+ * Cleans and formats a free-text content block from the front page (settings
+ * "frontblock1"/"frontblock2", see settings.php): basic HTML formatting
+ * (paragraphs, links...), not a full rich editor — sufficient for a short
+ * description, a link, or a key figure.
  *
  * @param string|null $raw
  * @return string
@@ -850,10 +822,10 @@ function theme_obin_format_frontblock($raw) {
 }
 
 /**
- * Indique si l\'auto-inscription (création de compte) est réellement
- * disponible sur ce site : même vérification que celle utilisée par le
- * coeur de Moodle sur la page de connexion (méthode d\'authentification
- * configurée dans $CFG->registerauth, et qui supporte l\'auto-inscription).
+ * Returns whether self-registration (account creation) is actually available
+ * on this site: uses the same check as Moodle core on the login page
+ * (authentication method configured in $CFG->registerauth that supports
+ * self-registration).
  *
  * @return bool
  */

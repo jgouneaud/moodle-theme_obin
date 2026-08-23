@@ -36,12 +36,12 @@
             {{#email}}
                 <a href="mailto:{{email}}">{{email}}</a>
             {{/email}}
-            <a href="https://download.moodle.org/mobile/" target="_blank" rel="noopener">📱 Version mobile</a>
+            <a href="https://download.moodle.org/mobile/" target="_blank" rel="noopener">{{#str}}mobileapp, theme_obin{{/str}}</a>
         </nav>
         <div class="obin-footer-copyright">
             © {{year}} {{sitename}}
         </div>
-        <button id="openHaOverlay" class="obin-donate-btn">❤️ Je soutiens le Theme OBIN pour Moodle</button>
+        <button id="openHaOverlay" class="obin-donate-btn">{{#str}}donatebutton, theme_obin{{/str}}</button>
     </div>
 </footer>
 

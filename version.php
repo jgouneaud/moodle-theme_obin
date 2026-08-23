@@ -17,11 +17,11 @@
 /**
  * Theme OBIN - version information.
  *
- * Thème enfant de Boost pour l'association "Citoyenneté et Inclusion
- * Numérique" (OBIN), association loi 1901 engagée pour l'inclusion
- * numérique. Ce thème n'ajoute aucune fonctionnalité : il applique la
- * charte graphique officielle de l'association (couleurs, typographie)
- * par-dessus le thème Boost, sans modifier ses gabarits.
+ * A Boost child theme for the "Citoyenneté et Inclusion Numérique" (OBIN)
+ * association (French non-profit, loi 1901), committed to digital inclusion.
+ * This theme adds no new features: it applies the association's official
+ * graphic charter (colours, typography) on top of Boost, without modifying
+ * its layouts.
  *
  * @package    theme_obin
  * @copyright  2026 Citoyenneté et Inclusion Numérique (OBIN) <contact@obin-asso.fr>
@@ -32,17 +32,15 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_obin';
 $plugin->version   = 2026072601;
-// Compatibilité réellement vérifiée (installations de test dédiées,
-// thème activé, tableau de bord + administration + page d'accueil
-// contrôlés sans erreur) : Moodle 4.3, 4.5 et 5.2 - aucune adaptation de
-// code n'a été nécessaire entre ces trois versions. Les versions
-// intermédiaires (4.4, 5.0, 5.1) n'ont pas été testées mais sont
-// probablement compatibles, aucun changement cassant observé sur
-// l'intervalle couvert. Point notable pour Moodle 5.x : la séparation
-// du code servi dans un dossier "public/" (cf. UPGRADING.md de Moodle) ne
-// concerne que la configuration du serveur web, pas le code du thème
-// lui-même - theme_obin n'a besoin d'aucune modification pour ça.
-$plugin->requires  = 2023100900; // Moodle 4.3 (plus ancienne version testée).
+// Compatibility actually verified (dedicated test installs, theme activated,
+// dashboard + admin + front page checked without error): Moodle 4.3, 4.5
+// and 5.2 — no code changes were needed across these three versions.
+// Intermediate versions (4.4, 5.0, 5.1) were not tested but are likely
+// compatible; no breaking changes observed over the covered range.
+// Notable for Moodle 5.x: the "public/" directory split (see Moodle's
+// UPGRADING.md) only affects web-server configuration, not the theme code
+// itself — theme_obin requires no modification for that.
+$plugin->requires  = 2023100900; // Moodle 4.3 (oldest tested version).
 $plugin->maturity  = MATURITY_BETA;
 $plugin->release   = '1.0.0';
 $plugin->dependencies = [

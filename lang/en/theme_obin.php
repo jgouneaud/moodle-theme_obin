@@ -53,3 +53,5 @@ $string['frontblock1_desc'] = 'Content shown in the left column below the availa
 $string['frontblock2'] = 'Content block 2 (front page)';
 $string['frontblock2_desc'] = 'Same as block 1, shown in the right column. Empty by default.';
 $string['privacy:metadata'] = 'The OBIN theme does not store any personal data.';
+$string['donatebutton'] = '❤️ Support OBIN Theme for Moodle';
+$string['mobileapp'] = '📱 Mobile app';
