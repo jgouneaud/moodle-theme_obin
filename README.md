@@ -35,4 +35,4 @@ Ce thème est distribué sous licence **GNU GPL v3 ou ultérieure**, comme l'ens
 **Citoyenneté et Inclusion Numérique (OBIN)** — association loi 1901
 [obin-asso.fr](https://obin-asso.fr) — contact@obin-asso.fr
 
-Ce thème peut être librement utilisé, modifié et redistribué sous les termes de la GPL. Si vous appréciez ce travail, vous pouvez soutenir l'association via [HelloAsso](https://www.helloasso.com/associations/citoyennete-et-inclusion-numerique-obin) — entièrement facultatif, aucune fonctionnalité du thème n'en dépend.
+Ce thème peut être librement utilisé, modifié et redistribué sous les termes de la GPL. Si vous appréciez ce travail, vous pouvez soutenir l'association via [HelloAsso](https://www.helloasso.com/associations/citoyennete-et-inclusion-numerique-obin/formulaires/4) — entièrement facultatif, aucune fonctionnalité du thème n'en dépend.
