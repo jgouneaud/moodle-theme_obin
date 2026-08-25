@@ -51,8 +51,8 @@ function xmldb_theme_obin_install() {
 
     foreach ($areas as $filearea => $currentvalue) {
         if (!empty($currentvalue)) {
-            // Un logo est déjà configuré (déposé manuellement, ou par un
-            // upgrade précédent) : on ne touche à rien.
+            // A logo is already configured (uploaded manually or by a
+            // previous upgrade): leave it untouched.
             continue;
         }
 

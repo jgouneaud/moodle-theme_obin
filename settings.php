@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 if ($ADMIN->fulltree) {
     $settings = new admin_settingpage('themesettingobin', get_string('configtitle', 'theme_obin'));
 
-    // Couleur primaire (Bleu OBIN par défaut, charte graphique officielle).
+    // Primary colour (OBIN blue by default, official brand guidelines).
     $name = 'theme_obin/brandcolor';
     $title = get_string('brandcolor', 'theme_obin');
     $description = get_string('brandcolor_desc', 'theme_obin');
@@ -35,7 +35,7 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
-    // Couleur secondaire (Vert-Teal par défaut, charte graphique officielle).
+    // Secondary colour (teal by default, official brand guidelines).
     $name = 'theme_obin/secondarycolor';
     $title = get_string('secondarycolor', 'theme_obin');
     $description = get_string('secondarycolor_desc', 'theme_obin');
@@ -43,8 +43,8 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
-    // SCSS brut avancé (avant compilation) - pour les besoins non couverts
-    // par les réglages ci-dessus, mêmes conventions que le thème Boost.
+    // Raw advanced SCSS (before compilation) – for needs not covered
+    // by the settings above; follows the same conventions as the Boost theme.
     $name = 'theme_obin/scsspre';
     $title = get_string('scsspre', 'theme_obin');
     $description = get_string('scsspre_desc', 'theme_obin');
@@ -52,7 +52,7 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
-    // SCSS brut avancé (après compilation).
+    // Raw advanced SCSS (after compilation).
     $name = 'theme_obin/scss';
     $title = get_string('scss', 'theme_obin');
     $description = get_string('scss_desc', 'theme_obin');
@@ -60,9 +60,9 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
-    // Photo de bannière de la page d'accueil, déposée par l'administrateur.
-    // Utilisée par layout/frontpage.php ; à défaut, on retombe sur la photo
-    // par défaut fournie avec le thème (pix/hero.jpg).
+    // Front-page banner image, uploaded by the site administrator.
+    // Used by layout/frontpage.php; falls back to the default image
+    // bundled with the theme (pix/hero.jpg).
     $name = 'theme_obin/heroimage';
     $title = get_string('heroimage', 'theme_obin');
     $description = get_string('heroimage_desc', 'theme_obin');
@@ -73,7 +73,7 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
-    // Titre et slogan affichés sur la bannière (par défaut : nom officiel et
+    // Title and tagline displayed on the banner (defaults: official site name and
     // slogan de la charte graphique).
     $name = 'theme_obin/heroheading';
     $title = get_string('heroheading', 'theme_obin');
@@ -95,7 +95,7 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
-    // Pied de page visible, affiché sur tout le site (cf.
+    // Footer content displayed across the whole site (see
     // templates/theme_boost/footer.mustache et classes/output/core_renderer.php).
     $name = 'theme_obin/footertagline';
     $title = get_string('footertagline', 'theme_obin');
@@ -119,9 +119,9 @@ if ($ADMIN->fulltree) {
     $settings->add($setting);
 
     // Deux blocs de contenu libre en deux colonnes, sous la liste des cours
-    // disponibles de la page d'accueil (visiteurs non connectés). Vides par
-    // défaut : le thème est un template réutilisable par n'importe quelle
-    // structure, le contenu ne doit rien présumer d'une association ou d'un
+    // available on the front page (non-logged-in visitors). Empty by
+    // default: the theme is a reusable template for any
+    // organisation; content must not assume a specific association or
     // organisme en particulier.
     $name = 'theme_obin/frontblock1';
     $title = get_string('frontblock1', 'theme_obin');

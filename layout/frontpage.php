@@ -54,10 +54,10 @@ $extraclasses = ['uses-drawers'];
 if ($courseindexopen) {
     $extraclasses[] = 'drawer-open-index';
 }
-// Classe dédiée (plutôt que "pagelayout-frontpage", trop large) : ne cible
-// que le cas où la bannière est réellement affichée, pour ne pas masquer le
-// titre de page ni fermer l'espacement du haut quand un utilisateur connecté
-// consulte malgré tout cette page (la bannière, elle, ne s'affiche jamais
+// Dedicated CSS class (instead of "pagelayout-frontpage", too broad): only targets
+// the case where the banner is actually shown, so as not to hide the
+// page title or collapse the top spacing when a logged-in user
+// visits this page anyway (the banner itself is never shown
 // dans ce cas - cf. obinheroshown plus bas).
 if (!isloggedin() || isguestuser()) {
     $extraclasses[] = 'obin-hero-active';
@@ -118,9 +118,9 @@ $templatecontext = [
     'overflow' => $overflow,
     'headercontent' => $headercontent,
     'addblockbutton' => $addblockbutton,
-    // Bannière d'accueil OBIN : photo + titre + slogan, tous personnalisables
-    // depuis Administration du site > Apparence > OBIN. Priorité à la photo
-    // déposée par l'administrateur ; à défaut, photo fournie avec le thème.
+    // OBIN front-page banner: image + title + tagline, all configurable
+    // from Site administration > Appearance > OBIN. Admin-uploaded image
+    // takes priority; falls back to the image bundled with the theme.
     'obinherourl' => theme_obin_get_hero_image_url(),
     'obinheroheading' => format_string(get_config('theme_obin', 'heroheading') ?: 'Citoyenneté et Inclusion Numérique'),
     'obinherosubheading' => format_string(
@@ -130,21 +130,21 @@ $templatecontext = [
     // Mini-formulaire de connexion directement dans le menu (au lieu de
     // rediriger vers /login/index.php) : jeton anti-CSRF requis par
     // authenticate_user_login() (cf. \core\session\manager::validate_login_token()),
-    // valable pour la session en cours quelle que soit la page qui le génère.
+    // valid for the current session regardless of the page that generates it.
     'obinloginurl' => (new moodle_url('/login/index.php'))->out(false),
     'obinlogintoken' => \core\session\manager::get_login_token(),
     // Deux blocs de contenu libre sous la liste des cours, personnalisables
-    // depuis Administration du site > Apparence > OBIN (thème = template,
-    // le contenu dépend entièrement de la structure qui l'utilise - donc
-    // vide par défaut, rien de figé). HTML basique nettoyé (format_text)
-    // plutôt que du texte brut, pour permettre au minimum des paragraphes.
+    // from Site administration > Appearance > OBIN (theme = template,
+    // content depends entirely on the deploying organisation – therefore
+    // empty by default, nothing hard-coded). Basic sanitised HTML (format_text)
+    // rather than plain text, to allow at minimum paragraph breaks.
     'obinfrontblock1' => theme_obin_format_frontblock(get_config('theme_obin', 'frontblock1')),
     'obinfrontblock2' => theme_obin_format_frontblock(get_config('theme_obin', 'frontblock2')),
     'obinshowfrontblocks' => !empty(get_config('theme_obin', 'frontblock1')) || !empty(get_config('theme_obin', 'frontblock2')),
-    // Bouton "Créer un compte" : ne s'affiche que si l'auto-inscription est
-    // réellement disponible sur ce site (même vérification que le coeur de
+    // "Create account" button: only shown when self-registration is
+    // actually available on this site (same check as Moodle core
     // Moodle sur la page de connexion), pour ne jamais pointer vers un
-    // formulaire d'inscription désactivé.
+    // with registration form disabled.
     'obinshowsignup' => theme_obin_signup_available(),
 ];
 

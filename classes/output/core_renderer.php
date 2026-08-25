@@ -56,11 +56,11 @@ class core_renderer extends \theme_boost\output\core_renderer {
             'links' => $links,
             'haslinks' => !empty($links),
             'year' => date('Y'),
-            // Logo Moodle officiel ("powered by"), résolu via l\'image_url du
-            // renderer plutôt qu\'un chemin en dur : reste correct quelle que
+            // Official Moodle logo ("powered by"), resolved via the renderer's
+            // image_url rather than a hard-coded path: stays correct regardless
             // soit la structure de dossiers de la version de Moodle (cf.
-            // restructuration "public/" en 5.x, vérifiée sans impact ici
-            // justement parce qu\'on passe par ce mécanisme).
+            // of the "public/" restructure in 5.x, verified without impact here
+            // precisely because we go through this mechanism).
             'moodlelogourl' => $this->image_url('moodlelogo', 'core')->out(false),
         ];
 
