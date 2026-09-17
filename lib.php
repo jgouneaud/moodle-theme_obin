@@ -93,7 +93,7 @@ function theme_obin_get_extra_scss($theme) {
 
     $content = '
 /*
- * Official teal → blue gradient (direction reversed per OBIN's brand guidelines).
+ * Official teal → blue gradient (direction reversed per OBIN\'s brand guidelines).
  * The charter reserves this gradient "for the logo and strong graphic elements"
  * (headings, CTA buttons, accents) — not for general use. Applied only to
  * the navbar and primary buttons. The navbar gradient is subtly animated
