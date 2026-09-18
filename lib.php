@@ -320,7 +320,7 @@ body.pagelayout-login .login-logo img {
  * normally-displayed title — an empty gap would otherwise remain between the
  * navbar and the banner).
  */
-body.obin-hero-active .page-context-header {
+body.obin-hero-active .page-header-headings {
     display: none;
 }
 body.obin-hero-active #topofscroll.main-inner {
@@ -355,7 +355,7 @@ body.obin-hero-active #topofscroll.main-inner {
 .obin-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, ' . $brandcolor . 'D9 0%, ' . $secondarycolor . 'C7 100%);
+    background: linear-gradient(90deg, ' . $secondarycolor . 'C7 0%, ' . $brandcolor . 'D9 100%);
 }
 .obin-hero-content {
     position: relative;
