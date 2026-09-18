@@ -322,9 +322,16 @@ body.pagelayout-login .login-logo img {
  * the banner. On this guest-facing front page its other children
  * (course-header, header-actions-container, header-extras-container) are
  * always empty, so nothing is lost by hiding the whole element.
+ * "#topofscroll.main-inner" carries its own top padding from Boost core,
+ * independent of the header's own padding: hiding #page-header alone still
+ * left that separate padding in place, so it must be zeroed too.
  */
 body.obin-hero-active #page-header {
     display: none;
+}
+body.obin-hero-active #topofscroll.main-inner {
+    padding-top: 0;
+    margin-top: 0;
 }
 
 /*
