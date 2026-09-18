@@ -314,18 +314,17 @@ body.pagelayout-login .login-logo img {
  * by Boost via the standard page header) duplicates the banner title below: it
  * is hidden only when the banner is actually shown (class "obin-hero-active",
  * set by layout/frontpage.php only for logged-out visitors — no effect on the
- * rest of the site or on a logged-in visit to the same page). The space freed
- * up at the top of the page is also collapsed (".main-inner" has its own
- * padding/margin-top of 24px each, intended to add breathing room below the
- * normally-displayed title — an empty gap would otherwise remain between the
- * navbar and the banner).
+ * rest of the site or on a logged-in visit to the same page). The whole
+ * <header id="page-header"> element is hidden, not just the title text inside
+ * it: Boost applies its own vertical padding directly to that header element,
+ * so hiding only the inner heading (an earlier version of this rule) left an
+ * empty, still-padded header behind — a visible gap between the navbar and
+ * the banner. On this guest-facing front page its other children
+ * (course-header, header-actions-container, header-extras-container) are
+ * always empty, so nothing is lost by hiding the whole element.
  */
-body.obin-hero-active .page-header-headings {
+body.obin-hero-active #page-header {
     display: none;
-}
-body.obin-hero-active #topofscroll.main-inner {
-    padding-top: 0;
-    margin-top: 0;
 }
 
 /*
