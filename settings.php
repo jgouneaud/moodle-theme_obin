@@ -43,6 +43,19 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
+    // Whether the navbar logo is forced into a plain white silhouette (see
+    // lib.php, ".navbar-brand .logo/img"). Enabled by default: this keeps the
+    // exact behaviour existing installs already have (no visual change on
+    // upgrade). Organisations uploading a logo that doesn't read well as a
+    // flat white shape (multiple colours, fine detail, a wordmark...) can
+    // turn it off here instead of having to pre-edit their logo file.
+    $name = 'theme_obin/logowhitefilter';
+    $title = get_string('logowhitefilter', 'theme_obin');
+    $description = get_string('logowhitefilter_desc', 'theme_obin');
+    $setting = new admin_setting_configcheckbox($name, $title, $description, '1');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
     // Raw advanced SCSS (before compilation) – for needs not covered
     // by the settings above; follows the same conventions as the Boost theme.
     $name = 'theme_obin/scsspre';

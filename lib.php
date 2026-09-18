@@ -90,6 +90,9 @@ function theme_obin_get_pre_scss($theme) {
 function theme_obin_get_extra_scss($theme) {
     $brandcolor = !empty($theme->settings->brandcolor) ? $theme->settings->brandcolor : '#3D8FE8';
     $secondarycolor = !empty($theme->settings->secondarycolor) ? $theme->settings->secondarycolor : '#64D6A8';
+    // Default '1' matches the checkbox's own default (see settings.php): existing
+    // installs that have never touched this setting keep today's behaviour.
+    $logowhitefilter = !isset($theme->settings->logowhitefilter) || $theme->settings->logowhitefilter;
 
     $content = '
 /*
@@ -141,8 +144,8 @@ function theme_obin_get_extra_scss($theme) {
     max-height: 40px;
     max-width: 180px;
     width: auto;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
+    object-fit: contain;' . ($logowhitefilter ? '
+    filter: brightness(0) invert(1);' : '') . '
 }
 /*
  * Login page: WHITE background (see rules below), not the gradient — the logo
@@ -352,7 +355,7 @@ body.obin-hero-active #topofscroll.main-inner {
 .obin-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(61, 143, 232, .85) 0%, rgba(100, 214, 168, .78) 100%);
+    background: linear-gradient(135deg, ' . $brandcolor . 'D9 0%, ' . $secondarycolor . 'C7 100%);
 }
 .obin-hero-content {
     position: relative;
@@ -621,7 +624,7 @@ body.pagelayout-login .login-container::before {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-    background: #27507B;
+    background: darken(' . $brandcolor . ', 15%);
     color: #F3F4F6;
     padding: .5rem 1rem;
     margin-top: 2rem;
