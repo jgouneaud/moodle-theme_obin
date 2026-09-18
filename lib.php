@@ -660,7 +660,7 @@ body.pagelayout-login .login-container::before {
     color: #fff;
 }
 .obin-footer-copyright {
-    color: #9CA3AF;
+    color: rgba(255, 255, 255, .7);
     font-size: .85rem;
 }
 
