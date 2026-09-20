@@ -42,7 +42,7 @@ $plugin->version   = 2026091801;
 // itself — theme_obin requires no modification for that.
 $plugin->requires  = 2023100900; // Moodle 4.3 (oldest tested version).
 $plugin->maturity  = MATURITY_BETA;
-$plugin->release   = '1.0.1';
+$plugin->release   = '1.1.0';
 $plugin->dependencies = [
     'theme_boost' => 2023100900,
 ];
