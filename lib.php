@@ -345,12 +345,20 @@ body.pagelayout-login .login-logo img {
  * normally-displayed title — an empty gap would otherwise remain between the
  * navbar and the banner).
  */
-body.obin-hero-active .page-context-header {
+body.obin-hero-active #page-header,
+body.obin-hero-active .page-context-header,
+body.obin-hero-active [data-region="page-header-wrapper"] {
     display: none;
 }
 body.obin-hero-active #topofscroll.main-inner {
     padding-top: 0;
     margin-top: 0;
+}
+body.obin-hero-active #page-header {
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
 }
 
 /*
@@ -380,7 +388,7 @@ body.obin-hero-active #topofscroll.main-inner {
 .obin-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(61, 143, 232, .85) 0%, rgba(100, 214, 168, .78) 100%);
+    background: linear-gradient(315deg, ' . $brandcolor . 'D9 0%, ' . $secondarycolor . 'C7 100%);
 }
 .obin-hero-content {
     position: relative;
