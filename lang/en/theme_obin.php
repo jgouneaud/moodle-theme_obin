@@ -54,6 +54,12 @@ $string['frontblock2'] = 'Content block 2 (front page)';
 $string['frontblock2_desc'] = 'Same as block 1, shown in the right column. Empty by default.';
 $string['privacy:metadata'] = 'The OBIN theme does not store any personal data.';
 $string['donatebutton'] = '❤️ Support OBIN Theme for Moodle';
-$string['mobileapp'] = '📱 Mobile app';
+$string['mobileapp'] = 'Mobile app';
 $string['logowhitefilter'] = 'Force logo to white silhouette';
 $string['logowhitefilter_desc'] = 'When enabled, the navbar logo is converted to a plain white shape so it stays readable on the brand gradient. Disable this if your logo doesn\'t read well as a flat white silhouette (multiple colours, fine detail, a wordmark...).';
+
+$string['footersocial']      = 'Social networks';
+$string['footersocial_desc'] = 'One URL per line. LinkedIn, Facebook, Instagram, YouTube, X/Twitter auto-detected.';
+$string['footerbgcolor'] = 'Footer background colour';
+$string['footerbgcolor_desc'] = 'Background colour of the visible site footer.';
+

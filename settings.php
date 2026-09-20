@@ -108,6 +108,15 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
+
+    // Couleur de fond du pied de page.
+    $name = 'theme_obin/footerbgcolor';
+    $title = get_string('footerbgcolor', 'theme_obin');
+    $description = get_string('footerbgcolor_desc', 'theme_obin');
+    $setting = new admin_setting_configcolourpicker($name, $title, $description, '#1a3a5c');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
     // Footer content displayed across the whole site (see
     // templates/theme_boost/footer.mustache et classes/output/core_renderer.php).
     $name = 'theme_obin/footertagline';
@@ -136,6 +145,15 @@ if ($ADMIN->fulltree) {
     // default: the theme is a reusable template for any
     // organisation; content must not assume a specific association or
     // organisme en particulier.
+
+    // Réseaux sociaux : une URL par ligne, détection automatique du réseau.
+    $name = 'theme_obin/footersocial';
+    $title = get_string('footersocial', 'theme_obin');
+    $description = get_string('footersocial_desc', 'theme_obin');
+    $setting = new admin_setting_configtextarea($name, $title, $description, '');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
     $name = 'theme_obin/frontblock1';
     $title = get_string('frontblock1', 'theme_obin');
     $description = get_string('frontblock1_desc', 'theme_obin');

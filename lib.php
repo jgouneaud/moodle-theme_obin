@@ -90,9 +90,8 @@ function theme_obin_get_pre_scss($theme) {
 function theme_obin_get_extra_scss($theme) {
     $brandcolor = !empty($theme->settings->brandcolor) ? $theme->settings->brandcolor : '#3D8FE8';
     $secondarycolor = !empty($theme->settings->secondarycolor) ? $theme->settings->secondarycolor : '#64D6A8';
-    // Default '1' matches the checkbox's own default (see settings.php): existing
-    // installs that have never touched this setting keep today's behaviour.
     $logowhitefilter = !isset($theme->settings->logowhitefilter) || $theme->settings->logowhitefilter;
+    $footerbgcolor = !empty($theme->settings->footerbgcolor) ? $theme->settings->footerbgcolor : '#1a3a5c';
 
     $content = '
 /*
@@ -173,12 +172,12 @@ body.pagelayout-login .login-logo img {
 .navbar.fixed-top .usermenu .login,
 .navbar.fixed-top .navbar-toggler-icon,
 .navbar.fixed-top label {
-    color: #fff;
+    color: rgba(255,255,255,.82);
 }
 .navbar.fixed-top .nav-link:hover,
 .navbar.fixed-top a:hover {
     color: #fff;
-    opacity: .85;
+    opacity: 1;
 }
 
 /*
@@ -251,9 +250,10 @@ body.pagelayout-login .login-logo img {
  */
 .navbar.fixed-top .nav-link:hover,
 .navbar.fixed-top .nav-link:focus,
+.navbar.fixed-top .nav-link.active,
 .navbar.fixed-top .nav-link.active:hover,
 .navbar.fixed-top .nav-link.active:focus {
-    background-color: rgba(255, 255, 255, .18);
+    background-color: transparent !important;
     border-color: transparent;
     color: #fff;
 }
@@ -273,6 +273,32 @@ body.pagelayout-login .login-logo img {
  * (more readable than the default blue on a coloured gradient background,
  * especially over its blue portion).
  */
+.navbar.fixed-top .nav-link,
+.navbar.fixed-top .nav-link.active,
+.navbar.fixed-top .nav-link:hover,
+.navbar.fixed-top .nav-link:focus {
+    box-shadow: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border-bottom-color: transparent;
+}
+
+/* Suppression totale de tous les fonds/halos sur les liens navbar */
+.navbar.fixed-top .nav-link,
+.navbar.fixed-top .nav-link.active,
+.navbar.fixed-top .nav-link:hover,
+.navbar.fixed-top .nav-link:focus,
+.navbar.fixed-top .nav-link:focus-visible,
+.navbar.fixed-top .nav-link.active:hover,
+.navbar.fixed-top .nav-link.active:focus,
+.navbar.fixed-top li.nav-item > .nav-link {
+    background: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-bottom-color: transparent !important;
+    outline: none !important;
+}
+
 .navbar .nav-link {
     position: relative;
     transition: transform .2s ease;
@@ -299,8 +325,7 @@ body.pagelayout-login .login-logo img {
     bottom: 0;
     height: 3px;
     border-radius: 2px 2px 0 0;
-    background: #fff;
-    box-shadow: 0 0 8px rgba(255, 255, 255, .8);
+    background: rgba(255,255,255,.75);
     transition: left .25s ease, right .25s ease;
 }
 .navbar .nav-link:hover::after,
@@ -314,19 +339,13 @@ body.pagelayout-login .login-logo img {
  * by Boost via the standard page header) duplicates the banner title below: it
  * is hidden only when the banner is actually shown (class "obin-hero-active",
  * set by layout/frontpage.php only for logged-out visitors — no effect on the
- * rest of the site or on a logged-in visit to the same page). The whole
- * <header id="page-header"> element is hidden, not just the title text inside
- * it: Boost applies its own vertical padding directly to that header element,
- * so hiding only the inner heading (an earlier version of this rule) left an
- * empty, still-padded header behind — a visible gap between the navbar and
- * the banner. On this guest-facing front page its other children
- * (course-header, header-actions-container, header-extras-container) are
- * always empty, so nothing is lost by hiding the whole element.
- * "#topofscroll.main-inner" carries its own top padding from Boost core,
- * independent of the header\'s own padding: hiding #page-header alone still
- * left that separate padding in place, so it must be zeroed too.
+ * rest of the site or on a logged-in visit to the same page). The space freed
+ * up at the top of the page is also collapsed (".main-inner" has its own
+ * padding/margin-top of 24px each, intended to add breathing room below the
+ * normally-displayed title — an empty gap would otherwise remain between the
+ * navbar and the banner).
  */
-body.obin-hero-active #page-header {
+body.obin-hero-active .page-context-header {
     display: none;
 }
 body.obin-hero-active #topofscroll.main-inner {
@@ -361,7 +380,7 @@ body.obin-hero-active #topofscroll.main-inner {
 .obin-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, ' . $secondarycolor . 'C7 0%, ' . $brandcolor . 'D9 100%);
+    background: linear-gradient(135deg, rgba(61, 143, 232, .85) 0%, rgba(100, 214, 168, .78) 100%);
 }
 .obin-hero-content {
     position: relative;
@@ -475,7 +494,7 @@ a .icon,
 .navbar .nav-link:focus,
 .navbar .nav-link:focus-visible {
     outline: none;
-    box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .9);
+    box-shadow: none;
 }
 
 /*
@@ -497,11 +516,12 @@ input:focus-visible,
  * règles de couleur ci-dessus, plus spécifiques et donc prioritaires).
  */
 a {
-    color: #3D90E7;
+    color: ' . $brandcolor . ';
 }
 a:hover,
 a:focus {
-    color: #1B70D2;
+    color: ' . $brandcolor . ';
+    filter: brightness(0.85);
 }
 
 /*
@@ -509,11 +529,11 @@ a:focus {
  * d\'Administration du site, ".nav-tabs" Bootstrap).
  */
 .nav-tabs .nav-link {
-    color: #1B70D2;
+    color: ' . $brandcolor . ';
 }
 .nav-tabs .nav-link.active {
     color: #111827;
-    border-bottom-color: #1B70D2;
+    border-bottom-color: ' . $brandcolor . ';
 }
 /*
  * Pas de contour de focus sur ces onglets (demandé explicitement) : le
@@ -630,7 +650,7 @@ body.pagelayout-login .login-container::before {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-    background: darken(' . $brandcolor . ', 15%);
+    background: ' . $footerbgcolor . ';
     color: #F3F4F6;
     padding: .5rem 1rem;
     margin-top: 2rem;
@@ -666,7 +686,7 @@ body.pagelayout-login .login-container::before {
     color: #fff;
 }
 .obin-footer-copyright {
-    color: rgba(255, 255, 255, .7);
+    color: #9CA3AF;
     font-size: .85rem;
 }
 
@@ -676,6 +696,9 @@ body.pagelayout-login .login-container::before {
  * balisage et le script d\'ouverture/fermeture). Volontairement sobre : un
  * simple lien texte, pas un bouton visuellement appuyé.
  */
+.obin-footer-social { display: flex; gap: .5rem; margin-top: .75rem; }
+.obin-social-btn { display: inline-flex; color: rgba(255,255,255,.6); text-decoration: none; transition: color .15s; }
+.obin-social-btn:hover, .obin-social-btn:focus { color: #fff; }
 .obin-donate-btn {
     background: none;
     border: none;
@@ -722,6 +745,23 @@ body.pagelayout-login .login-container::before {
     text-align: center;
     margin-top: 2rem;
 }
+.obin-footer { padding: 3rem 1.5rem 2rem; }
+.obin-footer-inner { display: grid; grid-template-columns: 1fr; gap: 2.5rem; max-width: 1140px; margin: 0 auto; }
+@media (min-width: 768px) { .obin-footer-inner { grid-template-columns: 1.5fr 1.5fr 1fr; gap: 2rem 4rem; align-items: start; } }
+.obin-footer-col { display: flex; flex-direction: column; gap: .6rem; }
+.obin-footer-sitename { font-size: 1rem; font-weight: 600; color: #fff; letter-spacing: .01em; }
+.obin-footer-tagline { font-size: .875rem; color: rgba(255,255,255,.65); margin: 0; line-height: 1.5; }
+.obin-footer-copyright { font-size: .8rem; color: rgba(255,255,255,.45); margin-top: .5rem; }
+.obin-footer-moodlelogo { height: 36px; width: auto; filter: brightness(0) invert(1); opacity: .5; margin-top: .75rem; }
+.obin-footer-col--links { gap: .5rem; }
+.obin-footer-col--links a { color: rgba(255,255,255,.7); text-decoration: none; font-size: .875rem; transition: color .15s ease; display: inline-block; }
+.obin-footer-col--links a:hover, .obin-footer-col--links a:focus { color: #fff; }
+.obin-footer-app-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.4); margin: 0 0 .4rem; font-weight: 500; }
+.obin-footer-app-btns { display: flex; flex-direction: column; gap: .4rem; }
+.obin-app-btn { display: inline-flex; align-items: center; gap: .45rem; padding: .45rem .85rem; border: 1px solid rgba(255,255,255,.22); border-radius: 8px; color: rgba(255,255,255,.85); text-decoration: none; font-size: .78rem; font-weight: 500; transition: background .15s, border-color .15s, color .15s; width: fit-content; }
+.obin-app-btn:hover, .obin-app-btn:focus { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.45); color: #fff; }
+.obin-donate-btn { margin-top: 1.25rem; display: inline-flex; align-items: center; gap: .45rem; padding: .35rem .7rem; border: 1px solid rgba(255,255,255,.22); border-radius: 8px; background: none; color: rgba(255,255,255,.75); font-size: .78rem; font-weight: 500; cursor: pointer; transition: background .15s, border-color .15s, color .15s; width: fit-content; align-self: flex-start; }
+.obin-donate-btn:hover, .obin-donate-btn:focus { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.45); color: #fff; }
 ';
 
     if (!empty($theme->settings->scss)) {
@@ -777,6 +817,39 @@ function theme_obin_pluginfile($course, $cm, $context, $filearea, $args, $forced
     } else {
         send_file_not_found();
     }
+}
+
+/**
+ * Retourne les liens réseaux sociaux avec icône SVG détectée automatiquement.
+ * @return array List of ['url' => string, 'icon' => string, 'label' => string]
+ */
+function theme_obin_get_social_links() {
+    $raw = get_config('theme_obin', 'footersocial');
+    if (empty($raw)) {
+        return [];
+    }
+    $icons = [
+        'linkedin' => ['label' => 'LinkedIn', 'svg' => '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>'],
+        'facebook' => ['label' => 'Facebook', 'svg' => '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'],
+        'youtube'  => ['label' => 'YouTube',  'svg' => '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>'],
+    ];
+
+    $links = [];
+    foreach (preg_split('/\r\n|\r|\n/', $raw) as $url) {
+        $url = trim($url);
+        if (empty($url)) continue;
+        $icon_html = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>';
+        $label = 'Lien';
+        foreach ($icons as $key => $data) {
+            if (strpos($url, $key) !== false) {
+                $icon_html = $data['svg'];
+                $label = $data['label'];
+                break;
+            }
+        }
+        $links[] = ['url' => clean_param($url, PARAM_URL), 'icon' => $icon_html, 'label' => $label];
+    }
+    return $links;
 }
 
 /**

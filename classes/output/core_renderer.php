@@ -48,6 +48,7 @@ class core_renderer extends \theme_boost\output\core_renderer {
         $email = get_config('theme_obin', 'footeremail');
 
         $links = theme_obin_get_footer_links();
+        $sociallinks = theme_obin_get_social_links();
 
         $context = [
             'sitename' => format_string($SITE->fullname, true, ['context' => \context_system::instance()]),
@@ -62,6 +63,8 @@ class core_renderer extends \theme_boost\output\core_renderer {
             // of the "public/" restructure in 5.x, verified without impact here
             // precisely because we go through this mechanism).
             'moodlelogourl' => $this->image_url('moodlelogo', 'core')->out(false),
+            'sociallinks' => $sociallinks,
+            'hassociallinks' => !empty($sociallinks),
         ];
 
         return $this->render_from_template('theme_obin/footer_content', $context);
