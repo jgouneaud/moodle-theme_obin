@@ -20,7 +20,7 @@ Ce thème n'ajoute aucune fonctionnalité et ne modifie aucun gabarit de Boost :
 1. Télécharger ou cloner ce dépôt dans `[racine Moodle]/theme/obin`.
 2. Se connecter en administrateur et se rendre sur *Administration du site > Notifications* pour terminer l'installation.
 3. Activer le thème depuis *Administration du site > Apparence > Thèmes > Sélecteur de thème*.
-4. Le logo se configure normalement, depuis *Administration du site > Apparence > Logos* (ce thème n'a pas de réglage de logo propre, il respecte le réglage natif de Moodle).
+4. Le logo se configure normalement, depuis *Administration du site > Apparence > Logos* (ce thème n'a pas de réglage de logo propre, il respecte le réglage natif de Moodle). Tant qu'aucun logo n'y est déposé, le thème affiche son propre logo par défaut (embarqué dans `pix/logo.png`) sans jamais écrire dans ce réglage global : le désactiver ou activer un autre thème ne laisse donc aucune trace.
 
 ## Compatibilité
 

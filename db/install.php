@@ -25,51 +25,21 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Dépose le logo OBIN par défaut (Administration du site > Apparence >
- * Logos) à la première installation du thème, UNIQUEMENT si aucun logo
- * n'est déjà configuré (ne remplace jamais un logo existant, y compris
- * lors d'une réinstallation/mise à jour). Utilise les mêmes réglages coeur
- * "core_admin/logo" et "core_admin/logocompact" que n'importe quel logo
- * déposé manuellement dans Apparence > Logos - une structure qui dépose le
- * sien via cette page remplace donc simplement celui-ci normalement.
+ * Ancienne étape d'installation, retirée (cf. classes/output/core_renderer.php).
+ *
+ * Cette fonction déposait auparavant le logo OBIN dans le réglage GLOBAL
+ * "Administration du site > Apparence > Logos" (core_admin/logo et
+ * core_admin/logocompact). Ce réglage s'applique à tout Moodle, quel que
+ * soit le thème actif : un site qui désactivait ensuite theme_obin gardait
+ * le logo OBIN sur son thème suivant.
+ *
+ * Le logo par défaut du thème est désormais servi uniquement via
+ * core_renderer::get_logo_url()/get_compact_logo_url() (repli actif
+ * seulement tant que theme_obin est le thème actif, et qui ne modifie
+ * jamais aucun réglage global). Cette fonction ne fait donc plus rien ;
+ * elle est conservée uniquement pour ne pas casser une mise à niveau depuis
+ * une version où elle existait.
  */
 function xmldb_theme_obin_install() {
-    global $CFG;
-
-    $fs = get_file_storage();
-    $syscontext = context_system::instance();
-
-    $logopath = $CFG->dirroot . '/theme/obin/pix/logo.png';
-    if (!is_readable($logopath)) {
-        return true;
-    }
-
-    $areas = [
-        'logo' => get_config('core_admin', 'logo'),
-        'logocompact' => get_config('core_admin', 'logocompact'),
-    ];
-
-    foreach ($areas as $filearea => $currentvalue) {
-        if (!empty($currentvalue)) {
-            // A logo is already configured (uploaded manually or by a
-            // previous upgrade): leave it untouched.
-            continue;
-        }
-
-        $fs->delete_area_files($syscontext->id, 'core_admin', $filearea, 0);
-
-        $filerecord = [
-            'contextid' => $syscontext->id,
-            'component' => 'core_admin',
-            'filearea'  => $filearea,
-            'itemid'    => 0,
-            'filepath'  => '/',
-            'filename'  => 'logo.png',
-        ];
-        $fs->create_file_from_pathname($filerecord, $logopath);
-
-        set_config($filearea, '/logo.png', 'core_admin');
-    }
-
     return true;
 }

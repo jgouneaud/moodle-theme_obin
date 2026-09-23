@@ -69,4 +69,50 @@ class core_renderer extends \theme_boost\output\core_renderer {
 
         return $this->render_from_template('theme_obin/footer_content', $context);
     }
+
+    /**
+     * Logo principal (utilisé notamment sur la page de connexion).
+     *
+     * Si l'administrateur du site a déposé son propre logo (Administration du
+     * site > Apparence > Logos), on le respecte tel quel - comportement Boost
+     * standard, inchangé. Sinon, on retombe sur le logo par défaut EMBARQUÉ
+     * dans le thème (pix/logo.png) plutôt que de laisser l'emplacement vide.
+     *
+     * Ce logo par défaut n'est plus jamais écrit dans le réglage global
+     * core_admin/logo (cf. ancien db/install.php, retiré : il modifiait un
+     * réglage qui s'applique à TOUT Moodle, y compris si un autre thème est
+     * activé ensuite - un site qui désactivait theme_obin gardait alors le
+     * logo OBIN partout). Le fallback ici ne touche à rien : il n'est utilisé
+     * que le temps que ce thème est actif, et disparaît dès qu'un logo est
+     * réellement configuré ou qu'un autre thème est choisi.
+     *
+     * @param int|null $maxwidth
+     * @param int $maxheight
+     * @return \moodle_url|false
+     */
+    public function get_logo_url($maxwidth = null, $maxheight = 200) {
+        $logourl = parent::get_logo_url($maxwidth, $maxheight);
+        if (!empty($logourl)) {
+            return $logourl;
+        }
+
+        return $this->image_url('logo', 'theme_obin');
+    }
+
+    /**
+     * Logo compact (navbar). Même logique de repli que get_logo_url()
+     * ci-dessus.
+     *
+     * @param int $maxwidth
+     * @param int $maxheight
+     * @return \moodle_url|false
+     */
+    public function get_compact_logo_url($maxwidth = 300, $maxheight = 300) {
+        $logourl = parent::get_compact_logo_url($maxwidth, $maxheight);
+        if (!empty($logourl)) {
+            return $logourl;
+        }
+
+        return $this->image_url('logo', 'theme_obin');
+    }
 }
