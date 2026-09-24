@@ -31,7 +31,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_obin';
-$plugin->version   = 2026092401;
+$plugin->version   = 2026092402;
 // Compatibility actually verified (dedicated test installs, theme activated,
 // dashboard + admin + front page checked without error): Moodle 4.3, 4.5
 // and 5.2 — no code changes were needed across these three versions.
