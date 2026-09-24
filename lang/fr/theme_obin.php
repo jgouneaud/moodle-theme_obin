@@ -61,3 +61,9 @@ $string['footersocial_desc'] = 'Une URL par ligne. LinkedIn, Facebook, Instagram
 $string['footerbgcolor'] = 'Couleur du pied de page';
 $string['footerbgcolor_desc'] = 'Couleur de fond du pied de page visible sur tout le site.';
 
+$string['menuicons'] = 'Icônes des menus d\'administration';
+$string['menuicons_desc'] = 'Icônes affichées à côté des onglets d\'Administration du site et du menu secondaire de la page de cours (Accueil, Paramètres, Participants...). "Aucune" correspond au comportement natif de Boost (texte seul). "Emoji" est l\'apparence historique de ce thème. "Pictogrammes SVG" utilise un jeu d\'icônes plates monochromes dessiné pour ce thème, qui suit la couleur de marque.';
+$string['menuicons_none'] = 'Aucune (Boost par défaut, texte seul)';
+$string['menuicons_emoji'] = 'Emoji';
+$string['menuicons_svg'] = 'Pictogrammes SVG';
+

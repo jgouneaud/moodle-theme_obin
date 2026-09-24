@@ -56,6 +56,31 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
+    // Icônes des onglets d'administration : aucune (comportement natif de
+    // Boost), emoji (apparence historique de ce thème) ou pictogrammes SVG
+    // dessinés pour ce thème (voir theme_obin_get_menu_icons_scss() dans
+    // lib.php). Un vrai choix à trois options plutôt qu'une case à cocher :
+    // les trois rendus sont assez différents pour mériter chacun leur propre
+    // libellé.
+    //
+    // Défaut "svg" (choisi après test visuel sur un site de démo) : ne
+    // concerne que les NOUVELLES installations du thème - une installation
+    // existante qui a déjà ce réglage enregistré (même sur une valeur créée
+    // automatiquement lors d'une mise à jour précédente, ex. "emoji") garde
+    // sa valeur actuelle telle quelle ; il faut la changer manuellement dans
+    // Administration du site > Apparence > OBIN si on veut basculer.
+    $name = 'theme_obin/menuicons';
+    $title = get_string('menuicons', 'theme_obin');
+    $description = get_string('menuicons_desc', 'theme_obin');
+    $choices = [
+        'none' => get_string('menuicons_none', 'theme_obin'),
+        'emoji' => get_string('menuicons_emoji', 'theme_obin'),
+        'svg' => get_string('menuicons_svg', 'theme_obin'),
+    ];
+    $setting = new admin_setting_configselect($name, $title, $description, 'svg', $choices);
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
     // Raw advanced SCSS (before compilation) – for needs not covered
     // by the settings above; follows the same conventions as the Boost theme.
     $name = 'theme_obin/scsspre';

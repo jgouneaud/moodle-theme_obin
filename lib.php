@@ -556,50 +556,6 @@ a:focus {
 }
 
 /*
- * Emoji sur les principales pages d\'Administration du site : ciblage par
- * ancre (#linkxxx, stable, générée par Moodle core pour chaque catégorie de
- * réglages) plutôt que par le texte des chaînes de langue - évite de devoir
- * surcharger les chaînes core (mécanisme plus lourd, Admin > Langue >
- * Personnalisation) pour un simple ajout visuel.
- */
-.nav-tabs .nav-link[href$="#linkroot"]::before { content: "⚙️ "; }
-.nav-tabs .nav-link[href$="#linkusers"]::before { content: "👤 "; }
-.nav-tabs .nav-link[href$="#linkcourses"]::before { content: "📚 "; }
-.nav-tabs .nav-link[href$="#linkgrades"]::before { content: "📊 "; }
-.nav-tabs .nav-link[href$="#linkmodules"]::before { content: "🧩 "; }
-.nav-tabs .nav-link[href$="#linkappearance"]::before { content: "🎨 "; }
-.nav-tabs .nav-link[href$="#linkserver"]::before { content: "🖥️ "; }
-.nav-tabs .nav-link[href$="#linkreports"]::before { content: "📈 "; }
-.nav-tabs .nav-link[href$="#linkdevelopment"]::before { content: "🛠️ "; }
-
-/*
- * Emoji sur le menu secondaire de la page de cours (Accueil / Paramètres /
- * Participants / Rapports / Banque de questions / Plus). Ciblage par motif
- * dans l\'URL plutôt que par fragment #link (ce menu n\'en a pas) - chaque
- * lien pointe vers un script Moodle différent et identifiable.
- */
-.nav-tabs .nav-link[href*="course/view.php"]::before { content: "🏠 "; }
-.nav-tabs .nav-link[href*="section=frontpagesettings"]::before,
-.nav-tabs .nav-link[href*="course/edit.php"]::before { content: "⚙️ "; }
-.nav-tabs .nav-link[href*="user/index.php"]::before { content: "👥 "; }
-.nav-tabs .nav-link[href*="report/view.php"]::before { content: "📈 "; }
-.nav-tabs .nav-link[href*="question/edit.php"]::before { content: "❓ "; }
-#site-news-forum h2::before { content: "📢 "; }
-
-/*
- * Emoji sur le lien d\'abonnement au forum et sur le sous-menu "Plus" de la
- * page de cours (rapports, journaux, règles de surveillance...). Ciblage
- * par motif dans l\'URL, comme ci-dessus.
- */
-a[href*="mod/forum/subscribe.php"]::before { content: "🔔 "; }
-a[href*="report/competency/index.php"]::before { content: "🧠 "; }
-a[href*="report/log/index.php"]::before { content: "📜 "; }
-a[href*="report/loglive/index.php"]::before { content: "🔴 "; }
-a[href*="report/outline/index.php"]::before { content: "📋 "; }
-a[href*="report/participation/index.php"]::before { content: "🙋 "; }
-a[href*="tool/monitor/managerules.php"]::before { content: "🚨 "; }
-
-/*
  * Page de connexion : pleine largeur (demandé explicitement - pas de carte
  * centrée flottant sur un fond dégradé visible sur les côtés). Le dégradé
  * de marque reste présent, mais comme un simple liseré en tête de page
@@ -772,11 +728,181 @@ body.pagelayout-login .login-container::before {
 .obin-donate-btn:hover, .obin-donate-btn:focus { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.45); color: #fff; }
 ';
 
+    $content .= theme_obin_get_menu_icons_scss($theme);
+
     if (!empty($theme->settings->scss)) {
         $content .= $theme->settings->scss;
     }
 
     return $content;
+}
+
+/**
+ * Pictogrammes SVG (style trait, "currentColor") utilisés dans les menus
+ * d'administration quand le réglage "theme_obin/menuicons" (voir
+ * settings.php) vaut "svg". Dessinés spécifiquement pour ce thème - pas un
+ * set tiers - pour rester libre de toute question de licence et suivre
+ * exactement la couleur de texte du lien qui les porte, comme le faisaient
+ * les emoji qu'ils remplacent.
+ *
+ * @return array<string, string> clé => contenu interne du <svg> (sans la
+ *     balise <svg> elle-même ni ses attributs communs, ajoutés par
+ *     theme_obin_svg_icon_data_uri()).
+ */
+function theme_obin_get_menu_svg_icons() {
+    return [
+        'gear' => '<circle cx="12" cy="12" r="3.2"/><line x1="12" y1="2.5" x2="12" y2="5.5"/>'
+            . '<line x1="12" y1="18.5" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5.5" y2="12"/>'
+            . '<line x1="18.5" y1="12" x2="21.5" y2="12"/><line x1="5.3" y1="5.3" x2="7.4" y2="7.4"/>'
+            . '<line x1="16.6" y1="16.6" x2="18.7" y2="18.7"/><line x1="5.3" y1="18.7" x2="7.4" y2="16.6"/>'
+            . '<line x1="16.6" y1="7.4" x2="18.7" y2="5.3"/>',
+        'users' => '<circle cx="9" cy="8" r="3"/><path d="M4 20c0-3.3 2.2-5.5 5-5.5s5 2.2 5 5.5"/>'
+            . '<circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.2c2.4.3 3.8 2.2 3.8 5.3"/>',
+        'book' => '<path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/>'
+            . '<path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5z"/>',
+        'chartbar' => '<line x1="4" y1="20" x2="4" y2="12"/><line x1="10" y1="20" x2="10" y2="7"/>'
+            . '<line x1="16" y1="20" x2="16" y2="14"/><line x1="20" y1="20" x2="20" y2="4"/>',
+        'grid' => '<rect x="4" y="4" width="7" height="7" rx="1.2"/><rect x="13" y="4" width="7" height="7" rx="1.2"/>'
+            . '<rect x="4" y="13" width="7" height="7" rx="1.2"/><rect x="13" y="13" width="7" height="7" rx="1.2"/>',
+        'palette' => '<path d="M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.5-.6 1.5-1.4 0-.4-.15-.7-.4-1a1.4 1.4 0 0 1 1-2.4H16'
+            . 'a3.5 3.5 0 0 0 3.5-3.5C19.5 6.8 16.1 3.5 12 3.5z"/>'
+            . '<circle cx="7.5" cy="11" r="1.1" fill="currentColor" stroke="none"/>'
+            . '<circle cx="9.5" cy="7.3" r="1.1" fill="currentColor" stroke="none"/>'
+            . '<circle cx="14.5" cy="7.3" r="1.1" fill="currentColor" stroke="none"/>'
+            . '<circle cx="16.5" cy="11" r="1.1" fill="currentColor" stroke="none"/>',
+        'server' => '<rect x="3.5" y="4" width="17" height="6" rx="1.3"/><rect x="3.5" y="14" width="17" height="6" rx="1.3"/>'
+            . '<circle cx="7" cy="7" r=".9" fill="currentColor" stroke="none"/>'
+            . '<circle cx="7" cy="17" r=".9" fill="currentColor" stroke="none"/>',
+        'chartline' => '<polyline points="4,17 9,11 13,14 20,5"/><polyline points="15,5 20,5 20,10"/>',
+        'wrench' => '<path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-2.6 2.6-2-2z"/>',
+        'home' => '<path d="M4 11.5 12 4l8 7.5"/>'
+            . '<path d="M6 10v9.5a1 1 0 0 0 1 1h4v-6h2v6h4a1 1 0 0 0 1-1V10"/>',
+        'question' => '<circle cx="12" cy="12" r="9"/>'
+            . '<path d="M9.5 9.3a2.5 2.5 0 1 1 3.8 2.1c-.9.6-1.3 1.1-1.3 2.1"/>'
+            . '<circle cx="12" cy="17" r=".9" fill="currentColor" stroke="none"/>',
+        'megaphone' => '<path d="M3 10v4a1 1 0 0 0 1 1h2l1.5 5H10L9 15h1l9 3.5V5.5L10 10H4a1 1 0 0 0-1 1z"/>',
+        'bell' => '<path d="M6 10a6 6 0 0 1 12 0v4l1.5 3h-15L6 14z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+        'lightbulb' => '<path d="M9 18h6"/><path d="M10 21h4"/>'
+            . '<path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2.2h5.2c0-1 .4-1.7 1-2.2A6 6 0 0 0 12 3z"/>',
+        'document' => '<path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z"/>'
+            . '<path d="M14 3.5V8h4"/><line x1="8.5" y1="12" x2="15.5" y2="12"/>'
+            . '<line x1="8.5" y1="15.5" x2="15.5" y2="15.5"/>',
+        'dotlive' => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.4" fill="currentColor" stroke="none"/>',
+        'clipboard' => '<rect x="6" y="4.5" width="12" height="16" rx="1.5"/><rect x="9" y="3" width="6" height="3" rx="1"/>'
+            . '<line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="15" y2="15"/>',
+        'chat' => '<path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7A2.5 2.5 0 0 1 17.5 16H10l-4 4v-4H6.5'
+            . 'A2.5 2.5 0 0 1 4 13.5z"/>',
+        'alerttriangle' => '<path d="M12 4 21 19H3z"/><line x1="12" y1="10" x2="12" y2="14.5"/>'
+            . '<circle cx="12" cy="17" r=".9" fill="currentColor" stroke="none"/>',
+    ];
+}
+
+/**
+ * Encode un pictogramme (voir theme_obin_get_menu_svg_icons()) en data URI
+ * utilisable directement dans une règle CSS "mask"/"-webkit-mask" : sa
+ * couleur suit alors "currentColor", donc la couleur de texte du lien qui
+ * le porte (cohérent avec les règles de couleur des onglets existantes, cf.
+ * "$brandcolor" plus haut dans cette fonction).
+ *
+ * @param string $inner contenu interne du <svg> (voir tableau ci-dessus)
+ * @return string data URI complète, prête pour "mask: url(...)"
+ */
+function theme_obin_svg_icon_data_uri($inner) {
+    $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" '
+        . 'fill="none" stroke="currentColor" stroke-width="1.8" '
+        . 'stroke-linecap="round" stroke-linejoin="round">' . $inner . '</svg>';
+
+    return 'data:image/svg+xml,' . rawurlencode($svg);
+}
+
+/**
+ * Génère les règles CSS des pictogrammes des menus d'administration et du
+ * menu secondaire de la page de cours, selon le réglage
+ * "theme_obin/menuicons" (voir settings.php) :
+ * - "none" : aucune règle générée (comportement natif de Boost, texte seul) ;
+ * - "emoji" : jeu d'emoji (apparence historique du thème, conservée par
+ *   défaut pour ne rien changer aux installations existantes) ;
+ * - "svg" : pictogrammes SVG minimalistes dessinés pour ce thème (voir
+ *   theme_obin_get_menu_svg_icons()), en "currentColor".
+ *
+ * Un seul tableau de correspondance pour les deux modes (emoji/svg), afin
+ * que les deux couvrent exactement le même ensemble de liens sans jamais
+ * diverger l'un de l'autre au fil des évolutions futures.
+ *
+ * @param theme_config $theme
+ * @return string
+ */
+function theme_obin_get_menu_icons_scss($theme) {
+    $mode = !empty($theme->settings->menuicons) ? $theme->settings->menuicons : 'svg';
+
+    if ($mode === 'none') {
+        return '';
+    }
+
+    // Sélecteur CSS => [emoji (mode "emoji"), clé d'icône (mode "svg")].
+    $map = [
+        '.nav-tabs .nav-link[href$="#linkroot"]' => ['⚙️ ', 'gear'],
+        '.nav-tabs .nav-link[href$="#linkusers"]' => ['👤 ', 'users'],
+        '.nav-tabs .nav-link[href$="#linkcourses"]' => ['📚 ', 'book'],
+        '.nav-tabs .nav-link[href$="#linkgrades"]' => ['📊 ', 'chartbar'],
+        '.nav-tabs .nav-link[href$="#linkmodules"]' => ['🧩 ', 'grid'],
+        '.nav-tabs .nav-link[href$="#linkappearance"]' => ['🎨 ', 'palette'],
+        '.nav-tabs .nav-link[href$="#linkserver"]' => ['🖥️ ', 'server'],
+        '.nav-tabs .nav-link[href$="#linkreports"]' => ['📈 ', 'chartline'],
+        '.nav-tabs .nav-link[href$="#linkdevelopment"]' => ['🛠️ ', 'wrench'],
+        '.nav-tabs .nav-link[href*="course/view.php"]' => ['🏠 ', 'home'],
+        '.nav-tabs .nav-link[href*="section=frontpagesettings"], .nav-tabs .nav-link[href*="course/edit.php"]'
+            => ['⚙️ ', 'gear'],
+        '.nav-tabs .nav-link[href*="user/index.php"]' => ['👥 ', 'users'],
+        '.nav-tabs .nav-link[href*="report/view.php"]' => ['📈 ', 'chartline'],
+        '.nav-tabs .nav-link[href*="question/edit.php"]' => ['❓ ', 'question'],
+        '#site-news-forum h2' => ['📢 ', 'megaphone'],
+        'a[href*="mod/forum/subscribe.php"]' => ['🔔 ', 'bell'],
+        'a[href*="report/competency/index.php"]' => ['🧠 ', 'lightbulb'],
+        'a[href*="report/log/index.php"]' => ['📜 ', 'document'],
+        'a[href*="report/loglive/index.php"]' => ['🔴 ', 'dotlive'],
+        'a[href*="report/outline/index.php"]' => ['📋 ', 'clipboard'],
+        'a[href*="report/participation/index.php"]' => ['🙋 ', 'chat'],
+        'a[href*="tool/monitor/managerules.php"]' => ['🚨 ', 'alerttriangle'],
+    ];
+
+    $scss = "\n/*\n * Pictogrammes des menus d'administration (réglage \"theme_obin/menuicons\").\n */\n";
+
+    if ($mode === 'emoji') {
+        foreach ($map as $selector => $pair) {
+            $scss .= $selector . '::before { content: "' . $pair[0] . '"; }' . "\n";
+        }
+        return $scss;
+    }
+
+    // Mode "svg" : chaque icône n'est encodée qu'une seule fois (mise en
+    // cache locale), même si plusieurs sélecteurs la réutilisent (ex. la clé
+    // "gear" sert à la fois pour #linkroot et pour les réglages de cours).
+    $icons = theme_obin_get_menu_svg_icons();
+    $datauris = [];
+    foreach ($map as $selector => $pair) {
+        $iconkey = $pair[1];
+        if (!isset($icons[$iconkey])) {
+            continue;
+        }
+        if (!isset($datauris[$iconkey])) {
+            $datauris[$iconkey] = theme_obin_svg_icon_data_uri($icons[$iconkey]);
+        }
+        $uri = $datauris[$iconkey];
+        $scss .= $selector . '::before {'
+            . ' content: "";'
+            . ' display: inline-block;'
+            . ' width: 1em;'
+            . ' height: 1em;'
+            . ' margin-right: .35em;'
+            . ' vertical-align: -0.15em;'
+            . ' background-color: currentColor;'
+            . ' -webkit-mask: url("' . $uri . '") center / contain no-repeat;'
+            . ' mask: url("' . $uri . '") center / contain no-repeat;'
+            . ' }' . "\n";
+    }
+
+    return $scss;
 }
 
 // Google Fonts injection is now handled via the Hook API.

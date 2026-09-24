@@ -63,3 +63,9 @@ $string['footersocial_desc'] = 'One URL per line. LinkedIn, Facebook, Instagram,
 $string['footerbgcolor'] = 'Footer background colour';
 $string['footerbgcolor_desc'] = 'Background colour of the visible site footer.';
 
+$string['menuicons'] = 'Admin menu icons';
+$string['menuicons_desc'] = 'Icons shown next to the tabs in Site administration and the course secondary menu (Home, Settings, Participants...). "None" is Boost\'s original behaviour (text only). "Emoji" is this theme\'s historical look. "SVG pictograms" uses a flat, single-colour icon set drawn for this theme, following the brand colour.';
+$string['menuicons_none'] = 'None (Boost default, text only)';
+$string['menuicons_emoji'] = 'Emoji';
+$string['menuicons_svg'] = 'SVG pictograms';
+

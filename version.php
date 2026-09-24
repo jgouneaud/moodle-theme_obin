@@ -31,7 +31,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_obin';
-$plugin->version   = 2026092301;
+$plugin->version   = 2026092401;
 // Compatibility actually verified (dedicated test installs, theme activated,
 // dashboard + admin + front page checked without error): Moodle 4.3, 4.5
 // and 5.2 — no code changes were needed across these three versions.
@@ -42,7 +42,7 @@ $plugin->version   = 2026092301;
 // itself — theme_obin requires no modification for that.
 $plugin->requires  = 2023100900; // Moodle 4.3 (oldest tested version).
 $plugin->maturity  = MATURITY_BETA;
-$plugin->release   = '1.1.2';
+$plugin->release   = '1.2.0';
 $plugin->dependencies = [
     'theme_boost' => 2023100900,
 ];
