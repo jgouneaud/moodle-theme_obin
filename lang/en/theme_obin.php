@@ -36,8 +36,8 @@ $string['scsspre'] = 'Raw initial SCSS';
 $string['scsspre_desc'] = 'This SCSS code is injected before everything else, so it can override any Bootstrap/Boost default variable.';
 $string['scss'] = 'Raw SCSS';
 $string['scss_desc'] = 'This SCSS code is injected at the end of the compiled stylesheet.';
-$string['heroimage'] = 'Banner photo (front page)';
-$string['heroimage_desc'] = 'Photo shown as a banner on the front page, for logged-out visitors only. If no photo is uploaded here, a default photo bundled with the theme is used. Recommended size: at least 1600 × 500 px (wide ratio, about 3:1), JPG/PNG/WebP, ideally under 500 KB for fast loading. The photo is auto-cropped ("cover": fills the full width, fixed height) - avoid important subjects right at the top or bottom of the image.';
+$string['heroimage'] = 'Banner photo(s) (front page)';
+$string['heroimage_desc'] = 'Photo(s) shown as a banner on the front page, for logged-out visitors only. If no photo is uploaded here, a default photo bundled with the theme is used. You can upload several photos: with two or more, the banner becomes an auto-advancing crossfade slideshow (a single photo keeps the previous behaviour: a fixed banner). Recommended size per photo: at least 1600 × 500 px (wide ratio, about 3:1), JPG/PNG/WebP, ideally under 500 KB for fast loading. Each photo is auto-cropped ("cover": fills the full width, fixed height) - avoid important subjects right at the top or bottom of the image.';
 $string['heroheading'] = 'Banner title';
 $string['heroheading_desc'] = 'Large title shown on top of the front page banner photo.';
 $string['herosubheading'] = 'Banner subtitle / tagline';
@@ -68,4 +68,13 @@ $string['menuicons_desc'] = 'Icons shown next to the tabs in Site administration
 $string['menuicons_none'] = 'None (Boost default, text only)';
 $string['menuicons_emoji'] = 'Emoji';
 $string['menuicons_svg'] = 'SVG pictograms';
+
+$string['showstats'] = 'Show key figures';
+$string['showstats_desc'] = 'Shows a section between the banner and the course list (logged-out visitors only), with the number of courses, learners and activities on the site, computed automatically. A fourth figure is added depending on what the site actually uses: the number of badges issued if Open Badges is enabled and at least one has been issued, otherwise the average completion rate if completion tracking is enabled, otherwise the number of teachers.';
+$string['statcourses'] = 'Courses available';
+$string['statlearners'] = 'Enrolled learners';
+$string['statactivities'] = 'Learning activities';
+$string['statbadges'] = 'Badges issued';
+$string['statcompletion'] = 'Completion rate';
+$string['statteachers'] = 'Teachers';
 

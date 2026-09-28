@@ -15,6 +15,8 @@ Ce thème n'ajoute aucune fonctionnalité et ne modifie aucun gabarit de Boost :
 - Couleurs primaire/secondaire personnalisables depuis *Administration du site > Apparence > OBIN*, avec les couleurs de la charte comme valeurs par défaut.
 - Champs SCSS bruts (avant/après compilation) pour toute personnalisation avancée, sur le même principe que le thème Boost.
 - Icônes des menus d'administration configurables depuis *Administration du site > Apparence > OBIN* : aucune (texte seul, comportement natif de Boost), emoji (apparence historique du thème) ou pictogrammes SVG dessinés pour ce thème (monochromes, suivent la couleur de marque).
+- Bannière de page d'accueil personnalisable (photo, titre, sous-titre) : une ou plusieurs photos peuvent être déposées, avec un diaporama automatique en fondu enchaîné à partir de deux photos.
+- Section "chiffres clés" affichée sous la bannière (nombre de cours, d'apprenants, d'activités, et un 4e chiffre choisi automatiquement selon ce que le site utilise réellement : badges délivrés, taux de réussite ou nombre de formateurs), activable/désactivable depuis les réglages.
 
 ## Installation
 

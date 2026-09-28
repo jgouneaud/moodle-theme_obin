@@ -36,8 +36,8 @@ $string['scsspre'] = 'SCSS brut initial';
 $string['scsspre_desc'] = 'Ce code SCSS est injecté avant tout le reste : il permet de redéfinir n\'importe quelle variable Bootstrap/Boost.';
 $string['scss'] = 'SCSS brut';
 $string['scss_desc'] = 'Ce code SCSS est injecté à la fin de la feuille de style compilée.';
-$string['heroimage'] = 'Photo de bannière (page d\'accueil)';
-$string['heroimage_desc'] = 'Photo affichée en bandeau sur la page d\'accueil, pour les visiteurs non connectés uniquement. Si aucune photo n\'est déposée ici, une photo par défaut fournie avec le thème est utilisée. Taille recommandée : au moins 1600 × 500 px (ratio large, environ 3:1), format JPG/PNG/WebP, poids conseillé sous 500 Ko pour un chargement rapide. La photo est recadrée automatiquement en "cover" (remplit toute la largeur, hauteur fixe) : évitez les sujets importants tout en haut ou en bas de l\'image.';
+$string['heroimage'] = 'Photo(s) de bannière (page d\'accueil)';
+$string['heroimage_desc'] = 'Photo(s) affichée(s) en bandeau sur la page d\'accueil, pour les visiteurs non connectés uniquement. Si aucune photo n\'est déposée ici, une photo par défaut fournie avec le thème est utilisée. Vous pouvez déposer plusieurs photos : à partir de deux, la bannière devient un diaporama qui défile automatiquement en fondu enchaîné (une photo = comportement inchangé, bannière fixe). Taille recommandée par photo : au moins 1600 × 500 px (ratio large, environ 3:1), format JPG/PNG/WebP, poids conseillé sous 500 Ko pour un chargement rapide. Chaque photo est recadrée automatiquement en "cover" (remplit toute la largeur, hauteur fixe) : évitez les sujets importants tout en haut ou en bas de l\'image.';
 $string['heroheading'] = 'Titre de la bannière';
 $string['heroheading_desc'] = 'Titre affiché en grand sur la photo de bannière de la page d\'accueil.';
 $string['herosubheading'] = 'Sous-titre / slogan de la bannière';
@@ -66,4 +66,13 @@ $string['menuicons_desc'] = 'Icônes affichées à côté des onglets d\'Adminis
 $string['menuicons_none'] = 'Aucune (Boost par défaut, texte seul)';
 $string['menuicons_emoji'] = 'Emoji';
 $string['menuicons_svg'] = 'Pictogrammes SVG';
+
+$string['showstats'] = 'Afficher les chiffres clés';
+$string['showstats_desc'] = 'Affiche une section entre la bannière et la liste des cours (visiteurs non connectés uniquement), avec le nombre de cours, d\'apprenants et d\'activités du site, calculés automatiquement. Un quatrième chiffre s\'ajoute selon ce que le site utilise réellement : le nombre de badges délivrés si Open Badges est activé et qu\'au moins un a été délivré, sinon le taux de réussite moyen si le suivi d\'achèvement est activé, sinon le nombre de formateurs.';
+$string['statcourses'] = 'Cours disponibles';
+$string['statlearners'] = 'Apprenants inscrits';
+$string['statactivities'] = 'Activités pédagogiques';
+$string['statbadges'] = 'Badges délivrés';
+$string['statcompletion'] = 'Taux de réussite';
+$string['statteachers'] = 'Formateurs';
 

@@ -175,13 +175,88 @@
                         {{/hasregionmainsettingsmenu}}
 
                         {{#obinheroshown}}
-                        <div class="obin-hero d-print-none" style="background-image: url('{{{obinherourl}}}');">
+                        <div class="obin-hero d-print-none">
+                            {{#obinheroimages}}
+                            <div class="obin-hero-slide {{#first}}active{{/first}}" style="background-image: url('{{{url}}}');"></div>
+                            {{/obinheroimages}}
                             <div class="obin-hero-overlay"></div>
                             <div class="obin-hero-content">
                                 <h1>{{obinheroheading}}</h1>
                                 <p>« {{obinherosubheading}} »</p>
                             </div>
                         </div>
+                        {{#obinheroslideshow}}
+                        <script>
+                        (function() {
+                            // Diaporama du bandeau d'accueil (plusieurs photos déposées dans le
+                            // réglage "Photo de bannière") : fondu enchaîné simple en CSS/JS
+                            // plutôt que le composant "carousel" de Bootstrap, pour ne pas
+                            // dépendre de sa version exacte (variable selon les versions de
+                            // Moodle prises en charge par ce thème, cf. version.php).
+                            // Important : ce script est placé juste après les diapositives dans
+                            // le gabarit (et non plus haut dans la page comme précédemment),
+                            // pour être sûr qu'elles existent déjà dans le DOM au moment où il
+                            // s'exécute.
+                            var slides = document.querySelectorAll('.obin-hero-slide');
+                            if (slides.length < 2) {
+                                return;
+                            }
+                            var current = 0;
+                            setInterval(function() {
+                                slides[current].classList.remove('active');
+                                current = (current + 1) % slides.length;
+                                slides[current].classList.add('active');
+                            }, 6000);
+                        })();
+                        </script>
+                        {{/obinheroslideshow}}
+                        {{#obinshowstats}}
+                        <div class="obin-stats d-print-none">
+                            {{#obinstats}}
+                            <div class="obin-stat">
+                                <div class="obin-stat-value" data-obin-stat-target="{{value}}">0</div>
+                                <div class="obin-stat-label">{{label}}</div>
+                            </div>
+                            {{/obinstats}}
+                        </div>
+                        <script>
+                        (function() {
+                            // Anime chaque chiffre clé de 0 jusqu'à sa valeur finale (ex. "1234"
+                            // ou "87%") à l'affichage de la page. La valeur cible est lue depuis
+                            // l'attribut "data-obin-stat-target" (jamais depuis le texte affiché,
+                            // qui commence toujours à "0") pour ne dépendre d'aucune locale
+                            // d'affichage particulière.
+                            var duration = 1200;
+                            var els = document.querySelectorAll('.obin-stat-value[data-obin-stat-target]');
+                            for (var i = 0; i < els.length; i++) {
+                                (function(el) {
+                                    var raw = el.getAttribute('data-obin-stat-target');
+                                    var match = raw.match(/^(\d+)(.*)$/);
+                                    if (!match) {
+                                        el.textContent = raw;
+                                        return;
+                                    }
+                                    var target = parseInt(match[1], 10);
+                                    var suffix = match[2];
+                                    var start = null;
+                                    function step(timestamp) {
+                                        if (!start) {
+                                            start = timestamp;
+                                        }
+                                        var progress = Math.min((timestamp - start) / duration, 1);
+                                        el.textContent = Math.floor(progress * target) + suffix;
+                                        if (progress < 1) {
+                                            window.requestAnimationFrame(step);
+                                        } else {
+                                            el.textContent = target + suffix;
+                                        }
+                                    }
+                                    window.requestAnimationFrame(step);
+                                })(els[i]);
+                            }
+                        })();
+                        </script>
+                        {{/obinshowstats}}
                         {{/obinheroshown}}
 
                         {{{ output.course_content_header }}}

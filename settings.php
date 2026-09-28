@@ -98,14 +98,17 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
-    // Front-page banner image, uploaded by the site administrator.
+    // Front-page banner image(s), uploaded by the site administrator.
     // Used by layout/frontpage.php; falls back to the default image
-    // bundled with the theme (pix/hero.jpg).
+    // bundled with the theme (pix/hero.jpg). Several images can be
+    // uploaded here: with two or more, the banner becomes an
+    // auto-advancing slideshow (see theme_obin_get_hero_images() in
+    // lib.php) instead of a single fixed photo.
     $name = 'theme_obin/heroimage';
     $title = get_string('heroimage', 'theme_obin');
     $description = get_string('heroimage_desc', 'theme_obin');
     $setting = new admin_setting_configstoredfile($name, $title, $description, 'heroimage', 0, [
-        'maxfiles' => 1,
+        'maxfiles' => -1,
         'accepted_types' => ['.jpg', '.jpeg', '.png', '.webp'],
     ]);
     $setting->set_updatedcallback('theme_reset_all_caches');
@@ -190,6 +193,20 @@ if ($ADMIN->fulltree) {
     $title = get_string('frontblock2', 'theme_obin');
     $description = get_string('frontblock2_desc', 'theme_obin');
     $setting = new admin_setting_configtextarea($name, $title, $description, '');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
+    // Section "chiffres clés" affichée entre la bannière et la liste des
+    // cours (visiteurs non connectés uniquement) : nombre de cours,
+    // d'apprenants et d'activités, calculés automatiquement depuis la base
+    // Moodle (voir theme_obin_get_frontpage_stats() dans lib.php). Activée
+    // par défaut : un site qui vient d'installer le thème a en général
+    // au moins un cours à montrer ; l'admin peut la masquer ici si les
+    // chiffres ne sont pas encore assez parlants (site tout juste créé).
+    $name = 'theme_obin/showstats';
+    $title = get_string('showstats', 'theme_obin');
+    $description = get_string('showstats_desc', 'theme_obin');
+    $setting = new admin_setting_configcheckbox($name, $title, $description, '1');
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 }

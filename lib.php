@@ -111,10 +111,38 @@ function theme_obin_get_extra_scss($theme) {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
 }
+/*
+ * Texte blanc forcé sur les boutons pleins de couleur de marque : Bootstrap
+ * calcule automatiquement blanc ou noir selon la luminosité perçue de la
+ * couleur de fond (fonction "color-yiq" côté SCSS), et pour certaines
+ * teintes (oranges clairs, jaunes...) ce calcul choisit le noir - illisible
+ * si l\'organisation qui installe ce thème choisit une telle couleur comme
+ * "brandcolor"/"secondarycolor" (réglages Administration du site > Apparence
+ * > OBIN). On force donc un résultat fiable plutôt que de dépendre de ce
+ * calcul automatique, cohérent avec l\'usage normal d\'un bouton plein
+ * (fond de couleur vive = texte blanc), quelle que soit la couleur choisie.
+ */
+.btn-primary,
+.btn-success,
+.btn-info {
+    color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-success:hover,
+.btn-success:focus,
+.btn-info:hover,
+.btn-info:focus {
+    color: #fff;
+}
 .btn-primary {
     background-color: ' . $brandcolor . ';
     border-color: ' . $brandcolor . ';
     transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.btn-success {
+    background-color: ' . $secondarycolor . ';
+    border-color: ' . $secondarycolor . ';
 }
 .btn-primary:hover,
 .btn-primary:focus {
@@ -385,6 +413,25 @@ body.obin-hero-active #page-header {
     background-position: center;
     overflow: hidden;
 }
+/*
+ * Diaporama (plusieurs photos, cf. réglage "heroimage") : chaque photo est
+ * une couche en fondu enchaîné (opacity), superposées les unes aux autres en
+ * position absolue, la classe ".active" (ajoutée/retirée en JS, voir
+ * templates/frontpage.mustache) contrôlant laquelle est visible. Une seule
+ * photo se comporte à l\'identique qu\'avant (une couche, toujours ".active",
+ * jamais de bascule JS puisque le script ne se lance qu\'à partir de 2 photos).
+ */
+.obin-hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+.obin-hero-slide.active {
+    opacity: 1;
+}
 .obin-hero-overlay {
     position: absolute;
     inset: 0;
@@ -415,6 +462,51 @@ body.obin-hero-active #page-header {
     .obin-hero { min-height: 280px; }
     .obin-hero-content h1 { font-size: 1.5rem; }
     .obin-hero-content p { font-size: 1rem; }
+}
+
+/*
+ * Chiffres clés (cours / apprenants / activités / 4e chiffre variable, cf.
+ * theme_obin_get_frontpage_stats() dans lib.php), affichés juste sous la
+ * bannière. Grille responsive (colonnes qui s\'empilent en 2x2 puis 1x4 sur
+ * petit écran), gros chiffre en couleur de marque + libellé discret en
+ * dessous, façon Coursera/Udemy - simple "réassurance" chiffrée avant la
+ * liste des cours.
+ */
+.obin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 960px;
+    margin: -1.5rem auto 2rem;
+    padding: 1.5rem 1rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(17, 24, 39, .12);
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+.obin-stat-value {
+    font-family: "Poppins", "Lato", sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: ' . $brandcolor . ';
+    line-height: 1.1;
+}
+.obin-stat-label {
+    font-size: .85rem;
+    color: #374151;
+    margin-top: .25rem;
+}
+@media (max-width: 767.98px) {
+    .obin-stats {
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: 1rem;
+        gap: 1.25rem 1rem;
+    }
+}
+@media (max-width: 575.98px) {
+    .obin-stat-value { font-size: 1.5rem; }
 }
 
 /*
@@ -484,6 +576,23 @@ a .icon,
 .btn .icon {
     color: inherit;
     opacity: 1;
+}
+/*
+ * Même logique pour un lien <a> placé À L\'INTÉRIEUR d\'un bouton (ex. un
+ * conteneur ".btn"/".btn-primary" qui enveloppe un <a> plutôt que d\'être
+ * lui-même le lien) : la règle générale "a { color: $brandcolor }" plus bas
+ * cible directement la balise <a> et l\'emporte sur la couleur héritée du
+ * bouton parent, quelle que soit la spécificité de ".btn-primary" - un
+ * navigateur applique toujours en priorité une règle qui cible l\'élément
+ * lui-même plutôt qu\'une valeur héritée. Résultat observé : le lien devient
+ * bleu/noir au lieu de suivre la couleur (souvent blanche) du bouton, donc
+ * parfois illisible selon le fond. On force ce lien à suivre la couleur du
+ * bouton, exactement comme pour les icônes ci-dessus.
+ */
+.btn a,
+.btn a:hover,
+.btn a:focus {
+    color: inherit;
 }
 
 /*
@@ -914,6 +1023,9 @@ function theme_obin_get_menu_icons_scss($theme) {
  * default photo bundled with the theme (pix/hero.jpg).
  *
  * @return string
+ * @deprecated kept only in case some fork calls it directly; the theme
+ *     itself now uses theme_obin_get_hero_images() (see below), which
+ *     supports several photos (slideshow).
  */
 function theme_obin_get_hero_image_url() {
     global $OUTPUT;
@@ -925,6 +1037,146 @@ function theme_obin_get_hero_image_url() {
     }
 
     return $OUTPUT->image_url('hero', 'theme_obin')->out(false);
+}
+
+/**
+ * Returns the URL(s) of the front-page banner photo(s), for the "heroimage"
+ * setting (Appearance > OBIN): zero, one or several files can be uploaded
+ * there (see settings.php, "maxfiles" => -1). With two or more, the banner
+ * becomes an auto-advancing slideshow instead of a single fixed photo (see
+ * templates/frontpage.mustache and the ".obin-hero-slide" CSS below).
+ *
+ * Falls back to the single default photo bundled with the theme
+ * (pix/hero.jpg) when the administrator hasn't uploaded any.
+ *
+ * @return string[] list of image URLs, always at least one entry
+ */
+function theme_obin_get_hero_images() {
+    global $OUTPUT;
+
+    $context = context_system::instance();
+    $fs = get_file_storage();
+    $files = $fs->get_area_files(
+        $context->id,
+        'theme_obin',
+        'heroimage',
+        0,
+        'filename',
+        false // Exclude directories/empty files.
+    );
+
+    if (empty($files)) {
+        return [$OUTPUT->image_url('hero', 'theme_obin')->out(false)];
+    }
+
+    $urls = [];
+    foreach ($files as $file) {
+        $urls[] = moodle_url::make_pluginfile_url(
+            $file->get_contextid(),
+            $file->get_component(),
+            $file->get_filearea(),
+            $file->get_itemid(),
+            $file->get_filepath(),
+            $file->get_filename()
+        )->out(false);
+    }
+
+    return $urls;
+}
+
+/**
+ * Returns the "key figures" shown between the front-page banner and the
+ * course list, for logged-out visitors only (see layout/frontpage.php,
+ * setting "theme_obin/showstats"): number of courses, number of learners,
+ * number of activities, and a fourth figure chosen automatically depending
+ * on what the site actually uses, so as never to display a discouraging
+ * "0" on a site that doesn't use that feature:
+ *   1. badges issued (if Open Badges is enabled AND at least one has been
+ *      issued),
+ *   2. otherwise the average completion rate (if completion tracking is
+ *      enabled AND there is at least one completion record),
+ *   3. otherwise the number of teachers (always available, essentially
+ *      never zero once a course has an assigned teacher).
+ *
+ * Results are cached for an hour (see db/caches.php): these are several
+ * non-trivial SQL queries, run on every anonymous front-page view, on what
+ * may be a shared/modest hosting plan for some organisations using this
+ * theme.
+ *
+ * @return array list of ['value' => int|string, 'label' => string]
+ */
+function theme_obin_get_frontpage_stats() {
+    global $DB;
+
+    $cache = \cache::make('theme_obin', 'frontpagestats');
+    $cached = $cache->get('stats');
+    if ($cached !== false) {
+        return $cached;
+    }
+
+    $stats = [];
+
+    // Nombre de cours (hors cours "site" lui-même, visibles uniquement).
+    $numcourses = $DB->count_records_select('course', 'id <> 1 AND visible = 1');
+    $stats[] = ['value' => $numcourses, 'label' => get_string('statcourses', 'theme_obin')];
+
+    // Nombre d'apprenants : utilisateurs distincts ayant une inscription
+    // active (non suspendue) avec un rôle de l'archétype "student" dans au
+    // moins un cours visible.
+    $sql = "SELECT COUNT(DISTINCT ue.userid)
+              FROM {user_enrolments} ue
+              JOIN {enrol} e ON e.id = ue.enrolid
+              JOIN {course} c ON c.id = e.courseid
+              JOIN {context} ctx ON ctx.instanceid = c.id AND ctx.contextlevel = :contextcourse
+              JOIN {role_assignments} ra ON ra.contextid = ctx.id AND ra.userid = ue.userid
+              JOIN {role} r ON r.id = ra.roleid AND r.archetype = 'student'
+             WHERE ue.status = 0 AND c.id <> 1 AND c.visible = 1";
+    $numlearners = (int) $DB->get_field_sql($sql, ['contextcourse' => CONTEXT_COURSE]);
+    $stats[] = ['value' => $numlearners, 'label' => get_string('statlearners', 'theme_obin')];
+
+    // Nombre d'activités (modules de cours actifs, hors cours "site").
+    $sql = "SELECT COUNT(cm.id)
+              FROM {course_modules} cm
+              JOIN {course} c ON c.id = cm.course
+             WHERE cm.deletioninprogress = 0 AND c.id <> 1 AND c.visible = 1";
+    $numactivities = (int) $DB->get_field_sql($sql);
+    $stats[] = ['value' => $numactivities, 'label' => get_string('statactivities', 'theme_obin')];
+
+    // Quatrième chiffre : repli badges -> taux de réussite -> formateurs.
+    $fourth = null;
+
+    if (!empty(get_config(null, 'enablebadges'))) {
+        $numbadges = $DB->count_records('badge_issued');
+        if ($numbadges > 0) {
+            $fourth = ['value' => $numbadges, 'label' => get_string('statbadges', 'theme_obin')];
+        }
+    }
+
+    if ($fourth === null && !empty(get_config(null, 'enablecompletion'))) {
+        $total = $DB->count_records_select('course_completions', 'course <> 1');
+        if ($total > 0) {
+            $completed = $DB->count_records_select('course_completions', 'course <> 1 AND timecompleted > 0');
+            $rate = (int) round(($completed / $total) * 100);
+            $fourth = ['value' => $rate . '%', 'label' => get_string('statcompletion', 'theme_obin')];
+        }
+    }
+
+    if ($fourth === null) {
+        $sql = "SELECT COUNT(DISTINCT ra.userid)
+                  FROM {role_assignments} ra
+                  JOIN {role} r ON r.id = ra.roleid AND r.archetype = 'editingteacher'
+                  JOIN {context} ctx ON ctx.id = ra.contextid AND ctx.contextlevel = :contextcourse
+                  JOIN {course} c ON c.id = ctx.instanceid
+                 WHERE c.id <> 1 AND c.visible = 1";
+        $numteachers = (int) $DB->get_field_sql($sql, ['contextcourse' => CONTEXT_COURSE]);
+        $fourth = ['value' => $numteachers, 'label' => get_string('statteachers', 'theme_obin')];
+    }
+
+    $stats[] = $fourth;
+
+    $cache->set('stats', $stats);
+
+    return $stats;
 }
 
 /**

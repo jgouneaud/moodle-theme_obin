@@ -98,6 +98,11 @@ $regionmainsettingsmenu = $buildregionmainsettings ? $OUTPUT->region_main_settin
 $header = $PAGE->activityheader;
 $headercontent = $header->export_for_template($renderer);
 
+$obinheroimageurls = theme_obin_get_hero_images();
+$obinheroimages = array_map(function($url, $index) {
+    return ['url' => $url, 'first' => ($index === 0)];
+}, $obinheroimageurls, array_keys($obinheroimageurls));
+
 $templatecontext = [
     'sitename' => format_string($SITE->shortname, true, ['context' => context_course::instance(SITEID), "escape" => false]),
     'output' => $OUTPUT,
@@ -118,15 +123,25 @@ $templatecontext = [
     'overflow' => $overflow,
     'headercontent' => $headercontent,
     'addblockbutton' => $addblockbutton,
-    // OBIN front-page banner: image + title + tagline, all configurable
-    // from Site administration > Appearance > OBIN. Admin-uploaded image
-    // takes priority; falls back to the image bundled with the theme.
-    'obinherourl' => theme_obin_get_hero_image_url(),
+    // OBIN front-page banner: image(s) + title + tagline, all configurable
+    // from Site administration > Appearance > OBIN. Admin-uploaded image(s)
+    // take priority; falls back to the image bundled with the theme. With
+    // two or more images, the banner becomes an auto-advancing slideshow
+    // (see theme_obin_get_hero_images() in lib.php and the JS at the
+    // bottom of templates/frontpage.mustache).
+    'obinheroimages' => $obinheroimages,
+    'obinheroslideshow' => count($obinheroimageurls) > 1,
     'obinheroheading' => format_string(get_config('theme_obin', 'heroheading') ?: 'Citoyenneté et Inclusion Numérique'),
     'obinherosubheading' => format_string(
         get_config('theme_obin', 'herosubheading') ?: 'Chaque citoyen mérite d\'être acteur de sa vie numérique.'
     ),
     'obinheroshown' => !isloggedin() || isguestuser(),
+    // Chiffres clés affichés sous la bannière (nombre de cours, d'apprenants,
+    // d'activités, + un 4e chiffre choisi automatiquement - voir
+    // theme_obin_get_frontpage_stats() dans lib.php), pour les visiteurs non
+    // connectés uniquement. Réglage "theme_obin/showstats" pour les masquer.
+    'obinshowstats' => !empty(get_config('theme_obin', 'showstats')),
+    'obinstats' => theme_obin_get_frontpage_stats(),
     // Mini-formulaire de connexion directement dans le menu (au lieu de
     // rediriger vers /login/index.php) : jeton anti-CSRF requis par
     // authenticate_user_login() (cf. \core\session\manager::validate_login_token()),
