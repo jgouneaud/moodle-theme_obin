@@ -4,7 +4,7 @@ Thème enfant de **Boost** (le thème par défaut de Moodle depuis la version 3.
 
 > « Chaque citoyen mérite d'être acteur de sa vie numérique. »
 
-Ce thème n'ajoute aucune fonctionnalité et ne modifie aucun gabarit de Boost : il applique uniquement la charte graphique officielle de l'association (couleurs, typographie, quelques détails d'accessibilité), tout en restant entièrement compatible avec les mises à jour futures de Boost.
+Ce thème applique la charte graphique officielle de l'association (couleurs, typographie, quelques détails d'accessibilité) par-dessus les gabarits de Boost, et ajoute quelques fonctionnalités optionnelles pour la page d'accueil (bandeau photo/diaporama, section "chiffres clés"), tout en restant entièrement compatible avec les mises à jour futures de Boost.
 
 ## Fonctionnalités
 

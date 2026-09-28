@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'OBIN';
-$string['choosereadme'] = 'OBIN is a Boost child theme built for "Citoyenneté et Inclusion Numérique" (OBIN), a French non-profit association working on digital inclusion. It applies the association\'s official graphic charter (colours, typography) on top of Boost\'s layouts, without modifying them.';
+$string['choosereadme'] = 'OBIN is a Boost child theme built for "Citoyenneté et Inclusion Numérique" (OBIN), a French non-profit association working on digital inclusion. It applies the association\'s official graphic charter (colours, typography) on top of Boost\'s layouts, without modifying them. It also adds a few optional front page features: a customisable banner (single photo or auto-advancing slideshow) and a "key figures" section (courses, learners, activities...).';
 $string['configtitle'] = 'OBIN settings';
 $string['region-side-pre'] = 'Right';
 $string['brandcolor'] = 'Primary colour';
