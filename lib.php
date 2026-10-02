@@ -127,6 +127,29 @@ function theme_obin_get_extra_scss($theme) {
 .btn-info {
     color: #fff;
 }
+/*
+ * Même défaut Bootstrap ("color-yiq" choisit parfois le noir sur une couleur
+ * de marque vive) rencontré ailleurs que sur les boutons : l\'élément
+ * "courant" en surbrillance dans le tiroir de navigation du cours (le volet
+ * de gauche listant les sections/activités, ".courseindex"). Plutôt que de
+ * corriger ce genre de cas un par un à chaque signalement, cette liste de
+ * sélecteurs est le point unique à étendre la prochaine fois qu\'un autre
+ * composant Boost/Bootstrap utilisant $primary ou $secondary en fond est
+ * signalé comme peu lisible : même politique partout (fond coloré vif =
+ * texte blanc forcé), plutôt qu\'un calcul automatique peu fiable.
+ */
+.courseindex-link.active,
+.courseindex-link.active:hover,
+.courseindex-link.active:focus,
+.courseindex-current,
+.courseindex-current .courseindex-link,
+.courseindex-item.courseindex-current .courseindex-link,
+.list-group-item.active,
+.badge-primary,
+.badge-success,
+.page-item.active .page-link {
+    color: #fff;
+}
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-success:hover,
@@ -477,7 +500,7 @@ body.obin-hero-active #page-header {
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
     max-width: 960px;
-    margin: -1.5rem auto 2rem;
+    margin: 2rem auto 2rem;
     padding: 1.5rem 1rem;
     background: #fff;
     border-radius: 10px;
@@ -501,12 +524,103 @@ body.obin-hero-active #page-header {
 @media (max-width: 767.98px) {
     .obin-stats {
         grid-template-columns: repeat(2, 1fr);
-        margin-top: 1rem;
+        margin-top: 1.5rem;
         gap: 1.25rem 1rem;
     }
 }
 @media (max-width: 575.98px) {
     .obin-stat-value { font-size: 1.5rem; }
+}
+
+/*
+ * Liste des cours de la page d\'accueil ("Cours disponibles") en grille de
+ * cartes plutôt qu\'empilée verticalement, façon "Vue d\'ensemble des cours"
+ * du tableau de bord (block_myoverview en mode "Carte"). On réutilise le
+ * balisage natif de Boost (.coursebox / .courseimage / .info / .content),
+ * sans override de renderer : uniquement du CSS, donc ça reste compatible
+ * avec les futures versions de Boost tant que ces classes ne changent pas.
+ */
+.frontpage-course-list-all {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+.frontpage-course-list-all .coursebox {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(17, 24, 39, .06);
+    transition: box-shadow .15s ease, transform .15s ease;
+    margin: 0;
+    padding: 0;
+}
+.frontpage-course-list-all .coursebox:hover {
+    box-shadow: 0 8px 20px rgba(17, 24, 39, .12);
+    transform: translateY(-2px);
+}
+/* Le balisage natif de Boost place l\'image et le texte (enseignant...)
+   côte à côte dans un ".d-flex" horizontal (celui de Bootstrap, pas le
+   nôtre) : ".content > .d-flex > [.courseimage, .flex-grow-1]". Sans cette
+   règle, l\'image reste coincée en vignette à gauche du texte au lieu de
+   passer en bandeau au-dessus - bug constaté en test réel avec une vraie
+   image de cours (les décors ci-dessous ne suffisent pas à eux seuls : il
+   faut d\'abord faire passer ce conteneur en colonne). */
+.frontpage-course-list-all .coursebox .content > .d-flex {
+    display: flex;
+    flex-direction: column;
+}
+/* L\'image (quand une image de présentation est configurée sur le cours)
+   passe en haut de carte, pleine largeur, hauteur fixe, recadrée en cover.
+   Elle se trouve dans ".content" (pas en enfant direct de ".coursebox"), on
+   la fait donc passer en premier à l\'intérieur de ".content" via order. */
+.frontpage-course-list-all .coursebox .courseimage,
+.frontpage-course-list-all .coursebox .courseimage img {
+    /* Boost fixe ".coursebox .content .courseimage img" à
+       "max-width:100px; max-height:100px" (vignette). Comme max-width et
+       max-height sont des propriétés distinctes de width/height, elles ne
+       sont pas remplacées par nos règles ci-dessous : elles s\'appliquent
+       en plus et plafonnaient le rendu à 100x100px quoi qu\'on mette comme
+       width/height, d\'où une image minuscule et mal recadrée. D\'où le
+       "none" explicite ci-dessous pour neutraliser ce plafond. */
+    max-width: none;
+    max-height: none;
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    order: -1;
+    /* Marge haute positive (et non plus négative) : le négatif tirait
+       l\'image vers le haut, dans l\'espace du titre, d\'où le rendu
+       "titre collé à la photo" signalé. */
+    margin: .75rem -1.25rem .75rem;
+    width: calc(100% + 2.5rem);
+}
+.frontpage-course-list-all .coursebox .info {
+    padding: 1rem 1.25rem .25rem;
+}
+.frontpage-course-list-all .coursebox .info .coursename a {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+.frontpage-course-list-all .coursebox .content {
+    display: flex;
+    flex-direction: column;
+    padding: .5rem 1.25rem 1.25rem;
+    flex: 1;
+}
+.frontpage-course-list-all .coursebox .content .summary {
+    font-size: .9rem;
+    color: #374151;
+}
+.frontpage-course-list-all .coursebox .teachers {
+    margin-top: auto;
+    padding-top: .75rem;
+    font-size: .85rem;
+    list-style: none;
+    padding-left: 0;
 }
 
 /*
@@ -860,11 +974,18 @@ body.pagelayout-login .login-container::before {
  */
 function theme_obin_get_menu_svg_icons() {
     return [
-        'gear' => '<circle cx="12" cy="12" r="3.2"/><line x1="12" y1="2.5" x2="12" y2="5.5"/>'
-            . '<line x1="12" y1="18.5" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5.5" y2="12"/>'
-            . '<line x1="18.5" y1="12" x2="21.5" y2="12"/><line x1="5.3" y1="5.3" x2="7.4" y2="7.4"/>'
-            . '<line x1="16.6" y1="16.6" x2="18.7" y2="18.7"/><line x1="5.3" y1="18.7" x2="7.4" y2="16.6"/>'
-            . '<line x1="16.6" y1="7.4" x2="18.7" y2="5.3"/>',
+        // Pictogramme "réglages" : un vrai contour d\'engrenage (dents
+        // rectangulaires pleines, pas de simples traits fins) pour qu\'il se
+        // lise sans ambiguïté comme un engrenage et non comme un soleil - un
+        // retour utilisateur ayant signalé que la version précédente (cercle
+        // + traits rayonnants) était prise pour un picto "luminosité".
+        'gear' => '<path d="M12 8.3a3.7 3.7 0 1 0 0 7.4 3.7 3.7 0 0 0 0-7.4z"/>'
+            . '<path fill="currentColor" stroke="none" fill-rule="evenodd" d="'
+            . 'M11 2.2h2l.5 2.8c.7.15 1.35.4 1.95.75l2.3-1.6 1.4 1.4-1.6 2.3c.35.6.6 1.25.75 1.95l2.8.5v2'
+            . 'l-2.8.5a6.9 6.9 0 0 1-.75 1.95l1.6 2.3-1.4 1.4-2.3-1.6a6.9 6.9 0 0 1-1.95.75l-.5 2.8h-2'
+            . 'l-.5-2.8a6.9 6.9 0 0 1-1.95-.75l-2.3 1.6-1.4-1.4 1.6-2.3a6.9 6.9 0 0 1-.75-1.95l-2.8-.5v-2'
+            . 'l2.8-.5c.15-.7.4-1.35.75-1.95l-1.6-2.3 1.4-1.4 2.3 1.6c.6-.35 1.25-.6 1.95-.75z'
+            . ' M12 9.6a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8z"/>',
         'users' => '<circle cx="9" cy="8" r="3"/><path d="M4 20c0-3.3 2.2-5.5 5-5.5s5 2.2 5 5.5"/>'
             . '<circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.2c2.4.3 3.8 2.2 3.8 5.3"/>',
         'book' => '<path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/>'
@@ -941,6 +1062,30 @@ function theme_obin_svg_icon_data_uri($inner) {
  * @param theme_config $theme
  * @return string
  */
+/**
+ * Ajoute "::before" à un sélecteur CSS, y compris quand ce sélecteur est en
+ * fait une liste séparée par des virgules (plusieurs sélecteurs équivalents
+ * pour un même lien, ex. ".nav-link[...], .dropdown-item[...]").
+ *
+ * Piège CSS corrigé ici : "a, b::before" n'applique le pseudo-élément qu'à
+ * "b", pas à "a" - une simple concaténation ($selector . '::before') casse
+ * donc silencieusement tous les sélecteurs à virgules sauf le dernier (bug
+ * réel rencontré : les pictogrammes "Paramètres"/"Banque de questions"
+ * n'apparaissaient plus après l'ajout d'un second sélecteur de repli). On
+ * ajoute donc "::before" à chaque partie individuellement.
+ *
+ * @param string $selector un sélecteur, éventuellement une liste séparée par virgules
+ * @return string le même sélecteur, "::before" ajouté à chaque partie
+ */
+function theme_obin_before_selector($selector) {
+    $parts = array_map('trim', explode(',', $selector));
+    $parts = array_map(function($part) {
+        return $part . '::before';
+    }, $parts);
+
+    return implode(', ', $parts);
+}
+
 function theme_obin_get_menu_icons_scss($theme) {
     $mode = !empty($theme->settings->menuicons) ? $theme->settings->menuicons : 'svg';
 
@@ -960,11 +1105,42 @@ function theme_obin_get_menu_icons_scss($theme) {
         '.nav-tabs .nav-link[href$="#linkreports"]' => ['📈 ', 'chartline'],
         '.nav-tabs .nav-link[href$="#linkdevelopment"]' => ['🛠️ ', 'wrench'],
         '.nav-tabs .nav-link[href*="course/view.php"]' => ['🏠 ', 'home'],
-        '.nav-tabs .nav-link[href*="section=frontpagesettings"], .nav-tabs .nav-link[href*="course/edit.php"]'
-            => ['⚙️ ', 'gear'],
+        // Note : le lien "section=frontpagesettings" a été volontairement
+        // exclu d'ici. Sur la page d'accueil/un cours, Moodle l'affiche comme
+        // un petit bouton rond icône-seule (déjà pourvu de sa propre icône
+        // native) plutôt que comme un onglet texte+icône : notre pictogramme
+        // venait alors se superposer à celui de Moodle dans ce bouton exigu,
+        // d'où le rendu confus signalé ("ça se met par-dessus"). Ailleurs
+        // (onglet "Réglages" avec libellé texte), "course/edit.php" seul
+        // suffit et reste couvert.
+        // Les deux sélecteurs ci-dessous ne dépendent plus de l\'ancêtre
+        // ".nav-tabs" : sur certaines pages (secondaire de cours avec menu
+        // "Plus"), ces liens "Paramètres" et "Banque de questions" sont
+        // rendus en ".dropdown-item" plutôt qu\'en ".nav-tabs .nav-link", et
+        // ne recevaient donc pas leur pictogramme.
+        // "frontpagesettings" (Paramètres du site, visible sur la page
+        // d'accueil) est réintégré ici : repéré en 2026-10 comme toujours
+        // sans pictogramme (régression indirecte du retrait fait plus haut
+        // pour corriger le chevauchement). Sur la page d'accueil, ce lien se
+        // rend comme un onglet texte normal (".nav-link"), pas comme le
+        // petit bouton rond icône-seule qui posait problème ailleurs : donc
+        // pas de risque de superposition ici.
+        '.nav-link[href*="course/edit.php"], .dropdown-item[href*="course/edit.php"],'
+            . ' .nav-link[href*="section=frontpagesettings"], .dropdown-item[href*="section=frontpagesettings"]' => ['⚙️ ', 'gear'],
         '.nav-tabs .nav-link[href*="user/index.php"]' => ['👥 ', 'users'],
         '.nav-tabs .nav-link[href*="report/view.php"]' => ['📈 ', 'chartline'],
-        '.nav-tabs .nav-link[href*="question/edit.php"]' => ['❓ ', 'question'],
+        // "Notes" (carnet de notes du cours) et "Activités" (index de toutes
+        // les activités du cours par type) : repérés en 2026-10 comme
+        // onglets du menu secondaire de cours sans aucune icône. Même jeu
+        // d'icônes que leurs équivalents du menu d'administration du site
+        // (#linkgrades / #linkmodules ci-dessus), pour rester cohérent.
+        '.nav-link[href*="grade/report/"], .dropdown-item[href*="grade/report/"]' => ['📊 ', 'chartbar'],
+        // Vérifié en direct (2026-10) : le lien "Activités" du menu
+        // secondaire de cours pointe en fait vers "course/overview.php", pas
+        // "mod/index.php" (supposition initiale erronée).
+        '.nav-link[href*="course/overview.php"], .dropdown-item[href*="course/overview.php"]' => ['🧩 ', 'grid'],
+        '.nav-link[href*="question/edit.php"], .dropdown-item[href*="question/edit.php"],'
+            . ' .nav-link[href*="question/banks.php"], .dropdown-item[href*="question/banks.php"]' => ['❓ ', 'question'],
         '#site-news-forum h2' => ['📢 ', 'megaphone'],
         'a[href*="mod/forum/subscribe.php"]' => ['🔔 ', 'bell'],
         'a[href*="report/competency/index.php"]' => ['🧠 ', 'lightbulb'],
@@ -979,7 +1155,7 @@ function theme_obin_get_menu_icons_scss($theme) {
 
     if ($mode === 'emoji') {
         foreach ($map as $selector => $pair) {
-            $scss .= $selector . '::before { content: "' . $pair[0] . '"; }' . "\n";
+            $scss .= theme_obin_before_selector($selector) . ' { content: "' . $pair[0] . '"; }' . "\n";
         }
         return $scss;
     }
@@ -998,7 +1174,7 @@ function theme_obin_get_menu_icons_scss($theme) {
             $datauris[$iconkey] = theme_obin_svg_icon_data_uri($icons[$iconkey]);
         }
         $uri = $datauris[$iconkey];
-        $scss .= $selector . '::before {'
+        $scss .= theme_obin_before_selector($selector) . ' {'
             . ' content: "";'
             . ' display: inline-block;'
             . ' width: 1em;'
