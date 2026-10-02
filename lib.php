@@ -545,6 +545,17 @@ body.obin-hero-active #page-header {
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1.5rem;
 }
+/* Vignette de cours arrondie partout où Boost l\'affiche en petit format
+   (ex. le bloc "Mes cours" de la page d\'accueil connectée) : cette liste-là
+   n\'a pas la classe ".frontpage-course-list-all" (réservée au bloc "Cours
+   disponibles"), donc les règles ci-dessous ne la couvraient pas - repéré en
+   2026-10 ("l\'image n\'est pas arrondie, pas très sexy"). Volontairement
+   limité au rayon des angles : on ne touche pas à la taille/au recadrage
+   natifs de Boost ici, pour ne pas reproduire ailleurs le bug de
+   max-width:100px déjà rencontré sur la grille "Cours disponibles". */
+.coursebox .courseimage img {
+    border-radius: 8px;
+}
 .frontpage-course-list-all .coursebox {
     display: flex;
     flex-direction: column;
