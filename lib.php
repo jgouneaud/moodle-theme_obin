@@ -604,6 +604,14 @@ body.obin-hero-active #page-header {
 .frontpage-course-list-all .coursebox .info .coursename a {
     font-size: 1.05rem;
     font-weight: 600;
+    /* Titre tronqué sur 2 lignes maximum ("..." si plus long) : la page
+       complète du cours (avec le titre entier) reste à un clic, inutile de
+       tout afficher dans la vignette. */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
 }
 .frontpage-course-list-all .coursebox .content {
     display: flex;
@@ -614,6 +622,19 @@ body.obin-hero-active #page-header {
 .frontpage-course-list-all .coursebox .content .summary {
     font-size: .9rem;
     color: #374151;
+}
+/* Le "line-clamp" doit cibler l\'élément qui contient le texte lui-même, pas
+   un conteneur de blocs : le balisage natif de Boost est
+   ".summary > .no-overflow > p", donc le mettre sur ".summary" (qui n\'a
+   qu\'un seul enfant bloc, le ".no-overflow") ne tronque rien - vérifié en
+   direct sur le site (aucun effet visible malgré une règle en apparence
+   correcte). Cibler le(s) "p" directement résout le problème. */
+.frontpage-course-list-all .coursebox .content .summary p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
 }
 .frontpage-course-list-all .coursebox .teachers {
     margin-top: auto;
@@ -1338,9 +1359,15 @@ function theme_obin_get_frontpage_stats() {
     }
 
     if ($fourth === null) {
+        // Compte les enseignants ET les enseignants non-éditeurs (archetypes
+        // "editingteacher" et "teacher") : ne compter que les premiers
+        // sous-évaluait le nombre réel de formateurs quand certains comptes
+        // (ex. un compte administrateur inscrit comme non-éditeur sur un
+        // cours) tiennent ce second rôle - repéré en 2026-10 via un retour
+        // utilisateur ("il manque un formateur dans le compte").
         $sql = "SELECT COUNT(DISTINCT ra.userid)
                   FROM {role_assignments} ra
-                  JOIN {role} r ON r.id = ra.roleid AND r.archetype = 'editingteacher'
+                  JOIN {role} r ON r.id = ra.roleid AND r.archetype IN ('editingteacher', 'teacher')
                   JOIN {context} ctx ON ctx.id = ra.contextid AND ctx.contextlevel = :contextcourse
                   JOIN {course} c ON c.id = ctx.instanceid
                  WHERE c.id <> 1 AND c.visible = 1";
