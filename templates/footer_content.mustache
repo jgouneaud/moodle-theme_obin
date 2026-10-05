@@ -50,14 +50,14 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
     <div style="position:relative;width:100%;max-width:950px;height:100%;overflow:hidden;">
-        <iframe id="haWidget" src="https://www.helloasso.com/associations/citoyennete-et-inclusion-numerique-obin/formulaires/4/widget?view=overlay" style="width:100%;height:100%;border:none;border-radius:8px;"></iframe>
+        <iframe id="haWidget" data-src="https://www.helloasso.com/associations/citoyennete-et-inclusion-numerique-obin/formulaires/4/widget?view=overlay" style="width:100%;height:100%;border:none;border-radius:8px;"></iframe>
     </div>
 </div>
 <script>
 (function(){
     var o=document.getElementById("openHaOverlay"),c=document.getElementById("closeHaWidgetBtn"),m=document.getElementById("haWidgetModal");
     if(!o||!m)return;
-    o.addEventListener("click",function(){m.style.display="flex";});
+    o.addEventListener("click",function(){var f=document.getElementById("haWidget");if(f&&!f.getAttribute("src")){f.setAttribute("src",f.getAttribute("data-src"));}m.style.display="flex";});
     if(c)c.addEventListener("click",function(){m.style.display="none";});
     m.addEventListener("click",function(e){if(e.target===m)m.style.display="none";});
 })();
