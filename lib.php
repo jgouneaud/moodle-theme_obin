@@ -403,7 +403,32 @@ body.obin-hero-active [data-region="page-header-wrapper"] {
 }
 body.obin-hero-active #topofscroll.main-inner {
     padding-top: 0;
-    margin-top: 0;
+    margin-top: 0 !important;
+}
+
+/*
+ * Moodle 5.3 : ajustements du nouveau menu (pastilles mds-nav-pill). Les
+ * regles du coeur sont plus precises que les notres, donc les !important.
+ * Sans effet sur les versions anterieures, ou ces classes sont absentes.
+ */
+.navbar a.mds-nav-pill--selected,
+.navbar a.mds-nav-pill--selected:hover,
+.navbar a.mds-nav-pill--selected * {
+    color: #111827 !important;
+}
+.navbar a.mds-nav-pill:hover,
+.navbar a.mds-nav-pill:focus-visible {
+    color: #111827 !important;
+}
+.secondary-navigation a.mds-nav-pill--selected::before {
+    width: 1em !important;
+    height: 1em !important;
+    border-radius: 0 !important;
+    margin-right: .35em !important;
+    background-color: currentColor !important;
+}
+.navbar .editmode-switch-form .mds-switch-label {
+    color: #fff !important;
 }
 body.obin-hero-active #page-header {
     height: 0;
@@ -1187,7 +1212,7 @@ function theme_obin_get_menu_icons_scss($theme) {
 
     if ($mode === 'emoji') {
         foreach ($map as $selector => $pair) {
-            $scss .= theme_obin_before_selector($selector) . ' { content: "' . $pair[0] . '"; }' . "\n";
+            $scss .= theme_obin_before_selector(theme_obin_add_pill_selectors($selector)) . ' { content: "' . $pair[0] . '"; }' . "\n";
         }
         return $scss;
     }
@@ -1206,7 +1231,7 @@ function theme_obin_get_menu_icons_scss($theme) {
             $datauris[$iconkey] = theme_obin_svg_icon_data_uri($icons[$iconkey]);
         }
         $uri = $datauris[$iconkey];
-        $scss .= theme_obin_before_selector($selector) . ' {'
+        $scss .= theme_obin_before_selector(theme_obin_add_pill_selectors($selector)) . ' {'
             . ' content: "";'
             . ' display: inline-block;'
             . ' width: 1em;'
@@ -1521,4 +1546,25 @@ function theme_obin_signup_available() {
     $authplugin = get_auth_plugin($CFG->registerauth);
 
     return $authplugin->can_signup();
+}
+
+
+/**
+ * Moodle 5.3 : les onglets du menu secondaire (Général, Utilisateurs, ...) sont
+ * des liens "a.mds-nav-pill" et non plus ".nav-tabs .nav-link". On ajoute le
+ * sélecteur équivalent à côté de l'ancien (qui reste utile pour les versions
+ * antérieures), limité au menu secondaire.
+ */
+function theme_obin_add_pill_selectors($selector) {
+    $parts = array_map('trim', explode(',', $selector));
+    $extra = [];
+    foreach ($parts as $part) {
+        if (strpos($part, '.nav-link') === false) {
+            continue;
+        }
+        $copy = str_replace('.nav-tabs .nav-link', '.mds-nav-pill', $part);
+        $copy = str_replace('.nav-link', '.mds-nav-pill', $copy);
+        $extra[] = '.secondary-navigation ' . $copy;
+    }
+    return implode(', ', array_unique(array_merge($parts, $extra)));
 }
