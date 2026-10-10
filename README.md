@@ -17,6 +17,10 @@ Ce thème applique la charte graphique officielle de l'association (couleurs, ty
 - Icônes des menus d'administration configurables depuis *Administration du site > Apparence > OBIN* : aucune (texte seul, comportement natif de Boost), emoji (apparence historique du thème) ou pictogrammes SVG dessinés pour ce thème (monochromes, suivent la couleur de marque).
 - Bannière de page d'accueil personnalisable (photo, titre, sous-titre) : une ou plusieurs photos peuvent être déposées, avec un diaporama automatique en fondu enchaîné à partir de deux photos.
 - Section "chiffres clés" affichée sous la bannière (nombre de cours, d'apprenants, d'activités, et un 4e chiffre choisi automatiquement selon ce que le site utilise réellement : badges délivrés, taux de réussite ou nombre de formateurs), activable/désactivable depuis les réglages.
+- Liste des cours disponibles en grille de cartes responsive (image en bandeau, titre et descriptif tronqués, texte complet à un clic), et vignettes de cours arrondies dans le bloc "Mes cours".
+- Deux blocs de contenu libres sur la page d'accueil (colonnes gauche/droite, mise en forme simple avec liens Markdown).
+- Pied de page personnalisable : accroche, e-mail de contact, liens libres (mentions légales, etc.), réseaux sociaux détectés automatiquement, couleur de fond, et filtre optionnel de logo en silhouette blanche.
+- Contraste du texte garanti (blanc) sur les éléments colorés avec la couleur de marque : boutons, menu latéral du cours, badges, pagination.
 
 ## Installation
 
