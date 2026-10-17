@@ -59,6 +59,14 @@ function theme_obin_get_pre_scss($theme) {
     $scss .= '$success: ' . $secondarycolor . ";\n";   // Teal green.
     $scss .= '$info: #4CBFD1;' . "\n";                 // Cyan accent.
 
+    // Selected line of the course index (left drawer). Boost 5.3 paints it with
+    // the brand colour and picks black or white text on its own, which is
+    // unreadable on mid-tone colours (orange, light green, yellow). We use a pale
+    // tint of the brand colour (15 percent) with dark text instead: the contrast
+    // stays above 14:1 whatever colour the administrator chooses.
+    $scss .= '$courseindex-item-page-bg: mix(#ffffff, $primary, 85%);' . "\n";
+    $scss .= '$courseindex-link-color-selected: #111827;' . "\n";
+
     // Brand neutrals: text black (never pure #000000), light grey for section/card backgrounds.
     $scss .= '$body-color: #111827;' . "\n";
     $scss .= '$gray-100: #F3F4F6;' . "\n";
@@ -138,17 +146,18 @@ function theme_obin_get_extra_scss($theme) {
  * signalé comme peu lisible : même politique partout (fond coloré vif =
  * texte blanc forcé), plutôt qu\'un calcul automatique peu fiable.
  */
-.courseindex-link.active,
-.courseindex-link.active:hover,
-.courseindex-link.active:focus,
-.courseindex-current,
-.courseindex-current .courseindex-link,
-.courseindex-item.courseindex-current .courseindex-link,
 .list-group-item.active,
 .badge-primary,
 .badge-success,
 .page-item.active .page-link {
     color: #fff;
+}
+/*
+ * Accent bar on the selected line of the course index, in the brand colour:
+ * keeps the site identity now that the line itself is a pale tint.
+ */
+.courseindex-item.pageitem {
+    box-shadow: inset 4px 0 0 ' . $brandcolor . ';
 }
 .btn-primary:hover,
 .btn-primary:focus,
