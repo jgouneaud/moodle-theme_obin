@@ -848,49 +848,88 @@ a:focus {
  * Mode sombre (Moodle 5.3+, attribut data-bs-theme="dark") : la couleur de
  * marque, souvent un bleu fonce, devient illisible sur fond sombre. On
  * l\'eclaircit pour les liens, onglets, icones et boutons secondaires.
- * :where() garde une specificite minimale pour ne pas ecraser les regles
- * plus precises du theme (boutons pleins, barre de navigation).
+ * Les regles du theme (couleur de texte en dur) sont plus precises, donc
+ * les couleurs ci-dessous sont en !important, limitees au mode sombre.
  */
-:where([data-bs-theme="dark"]) a:not(.btn):not(.nav-link):not(.dropdown-item) {
-    color: #9cc4f5;
-    color: color-mix(in srgb, ' . $brandcolor . ' 45%, white);
+[data-bs-theme="dark"] a:not(.btn):not(.nav-link):not(.dropdown-item) {
+    color: #9cc4f5 !important;
+    color: color-mix(in srgb, ' . $brandcolor . ' 45%, white) !important;
 }
-:where([data-bs-theme="dark"]) .dropdown-item,
-:where([data-bs-theme="dark"]) .nav-tabs .nav-link {
-    color: #9cc4f5;
-    color: color-mix(in srgb, ' . $brandcolor . ' 45%, white);
+[data-bs-theme="dark"] .dropdown-item,
+[data-bs-theme="dark"] .nav-tabs .nav-link {
+    color: #9cc4f5 !important;
+    color: color-mix(in srgb, ' . $brandcolor . ' 45%, white) !important;
 }
-:where([data-bs-theme="dark"]) .dropdown-item:hover,
-:where([data-bs-theme="dark"]) .dropdown-item:focus {
-    color: #fff;
+[data-bs-theme="dark"] .dropdown-item:hover,
+[data-bs-theme="dark"] .dropdown-item:focus {
+    color: #fff !important;
     filter: none;
 }
-:where([data-bs-theme="dark"]) .nav-tabs .nav-link.active {
-    color: #f3f4f6;
+[data-bs-theme="dark"] .nav-tabs .nav-link.active {
+    color: #f3f4f6 !important;
 }
-:where([data-bs-theme="dark"]) .btn-secondary,
-:where([data-bs-theme="dark"]) .btn-outline-secondary {
-    color: #cfe0f7;
-    border-color: #9cc4f5;
+[data-bs-theme="dark"] .btn-secondary,
+[data-bs-theme="dark"] .btn-outline-secondary {
+    color: #cfe0f7 !important;
+    border-color: #9cc4f5 !important;
 }
-:where([data-bs-theme="dark"]) a .icon,
-:where([data-bs-theme="dark"]) [role="button"] .icon,
-:where([data-bs-theme="dark"]) .action-icon .icon,
-:where([data-bs-theme="dark"]) .dropdown-toggle::after {
-    color: #9cc4f5;
+[data-bs-theme="dark"] a .icon,
+[data-bs-theme="dark"] [role="button"] .icon,
+[data-bs-theme="dark"] .action-icon .icon,
+[data-bs-theme="dark"] .dropdown-toggle::after {
+    color: #9cc4f5 !important;
 }
-:where([data-bs-theme="dark"]) .btn .icon {
-    color: inherit;
+[data-bs-theme="dark"] .btn .icon {
+    color: inherit !important;
 }
 /* Barre de navigation : lien actif lisible (texte clair sur fond sombre). */
-:where([data-bs-theme="dark"]) .navbar .nav-link.active,
-:where([data-bs-theme="dark"]) .navbar .nav-link.active:hover,
-:where([data-bs-theme="dark"]) .navbar .nav-link.active:focus {
-    color: #fff;
+[data-bs-theme="dark"] .navbar .nav-link.active,
+[data-bs-theme="dark"] .navbar .nav-link.active:hover,
+[data-bs-theme="dark"] .navbar .nav-link.active:focus {
+    color: #fff !important;
 }
 /* Bouton plein sombre : liseré clair pour le détacher du fond. */
-:where([data-bs-theme="dark"]) .btn-primary {
-    border-color: #9cc4f5;
+[data-bs-theme="dark"] .btn-primary {
+    border-color: #9cc4f5 !important;
+}
+
+[data-bs-theme="dark"] .navbar.fixed-top .dropdown-menu a,
+[data-bs-theme="dark"] .navbar.fixed-top .dropdown-menu .icon,
+[data-bs-theme="dark"] .navbar.fixed-top .popover-region-container a,
+[data-bs-theme="dark"] .navbar.fixed-top .popover-region-container .icon,
+[data-bs-theme="dark"] .navbar.fixed-top .popover-region-container label,
+[data-bs-theme="dark"] .dropdown-menu .dropdown-item {
+    color: #e5e7eb !important;
+}
+[data-bs-theme="dark"] .courseindex-item.pageitem,
+[data-bs-theme="dark"] .courseindex-item.pageitem a {
+    color: #f3f4f6 !important;
+}
+/* Menu deroulant : element survole ou actif, fond sombre translucide et texte blanc. */
+[data-bs-theme="dark"] .dropdown-menu .dropdown-item:hover,
+[data-bs-theme="dark"] .dropdown-menu .dropdown-item:focus,
+[data-bs-theme="dark"] .dropdown-menu .dropdown-item:focus-visible,
+[data-bs-theme="dark"] .dropdown-menu .dropdown-item:active,
+[data-bs-theme="dark"] .dropdown-menu .dropdown-item.active {
+    background-color: rgba(255, 255, 255, .14) !important;
+    color: #fff !important;
+}
+/* Barre de navigation 5.3 : pastilles lisibles en mode sombre. */
+[data-bs-theme="dark"] .navbar a.mds-nav-pill {
+    color: #fff !important;
+}
+[data-bs-theme="dark"] .navbar a.mds-nav-pill--selected,
+[data-bs-theme="dark"] .navbar a.mds-nav-pill--selected:hover,
+[data-bs-theme="dark"] .navbar a.mds-nav-pill--selected * {
+    color: #fff !important;
+}
+[data-bs-theme="dark"] .navbar .nav-link:not(.active) {
+    color: #fff !important;
+}
+/* Cartes de cours et menu de connexion restent blancs : liens en bleu de marque. */
+[data-bs-theme="dark"] .frontpage-course-list-all .coursebox a:not(.btn):not(.nav-link):not(.dropdown-item),
+[data-bs-theme="dark"] .obin-navbar-login a:not(.btn):not(.nav-link):not(.dropdown-item) {
+    color: ' . $brandcolor . ' !important;
 }
 
 /*
