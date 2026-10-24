@@ -845,6 +845,55 @@ a:focus {
 }
 
 /*
+ * Mode sombre (Moodle 5.3+, attribut data-bs-theme="dark") : la couleur de
+ * marque, souvent un bleu fonce, devient illisible sur fond sombre. On
+ * l\'eclaircit pour les liens, onglets, icones et boutons secondaires.
+ * :where() garde une specificite minimale pour ne pas ecraser les regles
+ * plus precises du theme (boutons pleins, barre de navigation).
+ */
+:where([data-bs-theme="dark"]) a:not(.btn):not(.nav-link):not(.dropdown-item) {
+    color: #9cc4f5;
+    color: color-mix(in srgb, ' . $brandcolor . ' 45%, white);
+}
+:where([data-bs-theme="dark"]) .dropdown-item,
+:where([data-bs-theme="dark"]) .nav-tabs .nav-link {
+    color: #9cc4f5;
+    color: color-mix(in srgb, ' . $brandcolor . ' 45%, white);
+}
+:where([data-bs-theme="dark"]) .dropdown-item:hover,
+:where([data-bs-theme="dark"]) .dropdown-item:focus {
+    color: #fff;
+    filter: none;
+}
+:where([data-bs-theme="dark"]) .nav-tabs .nav-link.active {
+    color: #f3f4f6;
+}
+:where([data-bs-theme="dark"]) .btn-secondary,
+:where([data-bs-theme="dark"]) .btn-outline-secondary {
+    color: #cfe0f7;
+    border-color: #9cc4f5;
+}
+:where([data-bs-theme="dark"]) a .icon,
+:where([data-bs-theme="dark"]) [role="button"] .icon,
+:where([data-bs-theme="dark"]) .action-icon .icon,
+:where([data-bs-theme="dark"]) .dropdown-toggle::after {
+    color: #9cc4f5;
+}
+:where([data-bs-theme="dark"]) .btn .icon {
+    color: inherit;
+}
+/* Barre de navigation : lien actif lisible (texte clair sur fond sombre). */
+:where([data-bs-theme="dark"]) .navbar .nav-link.active,
+:where([data-bs-theme="dark"]) .navbar .nav-link.active:hover,
+:where([data-bs-theme="dark"]) .navbar .nav-link.active:focus {
+    color: #fff;
+}
+/* Bouton plein sombre : liseré clair pour le détacher du fond. */
+:where([data-bs-theme="dark"]) .btn-primary {
+    border-color: #9cc4f5;
+}
+
+/*
  * Page de connexion : pleine largeur (demandé explicitement - pas de carte
  * centrée flottant sur un fond dégradé visible sur les côtés). Le dégradé
  * de marque reste présent, mais comme un simple liseré en tête de page
@@ -861,18 +910,23 @@ a:focus {
  */
 .pagelayout-login #page {
     background: #fff;
+    background: var(--bs-body-bg, #fff);
     background-image: none;
 }
 body.pagelayout-login .container-fluid {
     background: #fff;
+    background: var(--bs-body-bg, #fff);
     padding-top: 0;
 }
 body.pagelayout-login .login-wrapper {
     min-height: 100vh;
     padding: 0;
     background: #fff;
+    background: var(--bs-body-bg, #fff);
 }
 body.pagelayout-login .login-container {
+    background: #fff;
+    background: var(--bs-body-bg, #fff);
     position: relative;
     width: 100%;
     max-width: 100%;
