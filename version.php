@@ -41,7 +41,7 @@ $plugin->version   = 2026102403;
 // UPGRADING.md) only affects web-server configuration, not the theme code
 // itself — theme_obin requires no modification for that.
 $plugin->requires  = 2023100900; // Moodle 4.3 (oldest tested version).
-$plugin->maturity  = MATURITY_BETA;
+$plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = '1.3.12';
 $plugin->dependencies = [
     'theme_boost' => 2023100900,
