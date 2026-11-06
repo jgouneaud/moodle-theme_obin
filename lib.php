@@ -1110,6 +1110,7 @@ body.pagelayout-login .login-container::before {
 .obin-donate-btn:hover, .obin-donate-btn:focus { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.45); color: #fff; }
 ';
 
+    $content .= theme_obin_get_accessibility_scss($theme);
     $content .= theme_obin_get_menu_icons_scss($theme);
 
     if (!empty($theme->settings->scss)) {
@@ -1669,4 +1670,236 @@ function theme_obin_add_pill_selectors($selector) {
         $extra[] = '.secondary-navigation ' . $copy;
     }
     return implode(', ', array_unique(array_merge($parts, $extra)));
+}
+
+
+/**
+ * Accessibilité et lisibilité (1.4.0) : réglages optionnels de la section
+ * "Accessibilité et lisibilité" (voir settings.php), plus deux règles
+ * toujours actives :
+ * - le respect de la préférence "réduire les animations" du système de
+ *   l'utilisateur (prefers-reduced-motion), qui ne change rien pour les
+ *   autres utilisateurs ;
+ * - une feuille d'impression (désactivable), qui n'agit qu'à l'impression.
+ *
+ * Le CSS est écrit dans des blocs nowdoc (<<<'CSS') : aucune apostrophe n'a
+ * besoin d'être échappée à l'intérieur, contrairement à la grande chaîne de
+ * theme_obin_get_extra_scss().
+ *
+ * Tous les réglages sont désactivés par défaut (sauf l'impression) : une
+ * mise à jour du thème ne change donc rien à l'affichage d'un site existant.
+ *
+ * @param theme_config $theme
+ * @return string
+ */
+function theme_obin_get_accessibility_scss($theme) {
+    global $CFG;
+
+    $settings = $theme->settings;
+    $scss = "\n";
+
+    // Toujours actif : préférence système "réduire les animations".
+    $scss .= <<<'CSS'
+/* Accessibilité : respect de la préférence système "réduire les animations". */
+@media (prefers-reduced-motion: reduce) {
+    .navbar.fixed-top {
+        animation: none !important;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+CSS;
+
+    // Réglage : désactiver toutes les animations pour tout le monde.
+    if (!empty($settings->a11yreducemotion)) {
+        $scss .= <<<'CSS'
+/* Accessibilité : animations désactivées (réglage du thème). */
+.navbar.fixed-top {
+    animation: none !important;
+}
+*,
+*::before,
+*::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+CSS;
+    }
+
+    // Réglage : contour de focus renforcé, lisible sur tous les fonds
+    // (contour sombre + halo clair, inversés en mode sombre).
+    if (!empty($settings->a11yfocus)) {
+        $scss .= <<<'CSS'
+/* Accessibilité : contour de focus renforcé (réglage du thème). */
+:focus-visible,
+.navbar .nav-link:focus-visible,
+.navbar a.mds-nav-pill:focus-visible,
+.btn:focus-visible {
+    outline: 3px solid #111827 !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 6px #ffffff !important;
+}
+[data-bs-theme="dark"] :focus-visible,
+[data-bs-theme="dark"] .btn:focus-visible {
+    outline-color: #ffffff !important;
+    box-shadow: 0 0 0 6px #111827 !important;
+}
+
+CSS;
+    }
+
+    // Réglage : liens soulignés dans le contenu (pas seulement par la couleur).
+    if (!empty($settings->a11yunderline)) {
+        $scss .= <<<'CSS'
+/* Accessibilité : liens du contenu toujours soulignés (réglage du thème). */
+#region-main a:not(.btn):not(.nav-link):not(.dropdown-item):not(.list-group-item):not(.mds-nav-pill),
+.obin-footer a:not(.obin-app-btn) {
+    text-decoration: underline !important;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+}
+
+CSS;
+    }
+
+    // Réglage : taille du texte (tout Moodle est dimensionné en rem).
+    $sizes = ['112' => '112.5%', '125' => '125%'];
+    $size = isset($settings->a11ytextsize) ? (string)$settings->a11ytextsize : '100';
+    if (isset($sizes[$size])) {
+        $scss .= "/* Accessibilité : taille du texte augmentée (réglage du thème). */\n"
+            . "html {\n    font-size: " . $sizes[$size] . ";\n}\n\n";
+    }
+
+    // Réglage : espacement du texte (interligne, paragraphes, lettres, mots),
+    // dans l'esprit du critère WCAG 1.4.12.
+    if (!empty($settings->a11yspacing)) {
+        $scss .= <<<'CSS'
+/* Accessibilité : espacement du texte augmenté (réglage du thème). */
+#region-main {
+    line-height: 1.75;
+    letter-spacing: 0.012em;
+    word-spacing: 0.06em;
+}
+#region-main p,
+#region-main li {
+    margin-bottom: 1em;
+}
+
+CSS;
+    }
+
+    // Feuille d'impression (activée par défaut, n'agit qu'à l'impression).
+    if (!isset($settings->printstyles) || !empty($settings->printstyles)) {
+        $scss .= <<<'CSS'
+/* Impression : seul le contenu de la page est imprimé, en noir sur blanc. */
+@media print {
+    @page {
+        margin: 1.5cm;
+    }
+    .navbar,
+    .drawer,
+    .drawer-toggles,
+    .drawer-toggler,
+    #theme_boost-drawers-courseindex,
+    #theme_boost-drawers-blocks,
+    .secondary-navigation,
+    .header-actions-container,
+    .activity-navigation,
+    .btn-footer-popover,
+    .footer-popover,
+    #page-footer,
+    .obin-footer,
+    .action-menu,
+    .editmode-switch-form,
+    .btn,
+    #page .sr-only-focusable {
+        display: none !important;
+    }
+    html,
+    body,
+    #page,
+    #page-wrapper,
+    #topofscroll,
+    #region-main,
+    #region-main-box {
+        background: #ffffff !important;
+        color: #000000 !important;
+        box-shadow: none !important;
+    }
+    #page,
+    #page.drawers,
+    #topofscroll {
+        position: static !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+    body {
+        font-size: 11pt;
+        line-height: 1.5;
+    }
+    .quickediticon,
+    .inplaceeditable .quickeditlink .icon {
+        display: none !important;
+    }
+    a {
+        color: #000000 !important;
+        text-decoration: none !important;
+    }
+    .no-overflow a,
+    .activity-altcontent a,
+    .generalbox a {
+        text-decoration: underline !important;
+    }
+
+CSS;
+        // Adresse des liens externes imprimée après le lien, seulement dans
+        // les textes rédigés (pas dans les titres d'activités, où elle se
+        // superposait au titre). Les liens internes au site sont exclus.
+        $wwwroot = str_replace('"', '', $CFG->wwwroot);
+        $external = 'a[href^="http"]:not([href^="' . $wwwroot . '"])';
+        $scss .= '    .no-overflow ' . $external . '::after,' . "\n"
+            . '    .activity-altcontent ' . $external . '::after {' . "\n"
+            . '        content: " (" attr(href) ")";' . "\n"
+            . '        font-size: 0.85em;' . "\n"
+            . '        word-break: break-all;' . "\n"
+            . "    }\n";
+        $scss .= <<<'CSS'
+    .collapse:not(.show) {
+        display: block !important;
+    }
+    h1,
+    h2,
+    h3,
+    h4 {
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+    img,
+    figure,
+    table,
+    .activity-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    img {
+        max-width: 100% !important;
+    }
+}
+
+CSS;
+    }
+
+    return $scss;
 }

@@ -78,3 +78,21 @@ $string['statbadges'] = 'Badges issued';
 $string['statcompletion'] = 'Completion rate';
 $string['statteachers'] = 'Teachers';
 
+// Accessibility and readability (1.4.0).
+$string['a11yheading'] = 'Accessibility and readability';
+$string['a11yheading_desc'] = 'Optional settings to make the site easier to read and to use with a keyboard. All are off by default, so updating the theme changes nothing on an existing site. The theme always respects the reduced-motion preference set on the user\'s device.';
+$string['a11yfocus'] = 'Reinforced focus outline';
+$string['a11yfocus_desc'] = 'Shows a thick dark outline with a light halo around the element selected with the keyboard (Tab key). Readable on any background, including dark mode.';
+$string['a11yunderline'] = 'Always underline links';
+$string['a11yunderline_desc'] = 'Underlines links in the page content and footer, so they are not identified by colour alone.';
+$string['a11ytextsize'] = 'Text size';
+$string['a11ytextsize_desc'] = 'Enlarges all text on the site.';
+$string['a11ytextsize_100'] = 'Normal (100%)';
+$string['a11ytextsize_112'] = 'Large (112.5%)';
+$string['a11ytextsize_125'] = 'Very large (125%)';
+$string['a11yspacing'] = 'Increased text spacing';
+$string['a11yspacing_desc'] = 'Increases line height and spacing between paragraphs, letters and words in the page content. Helpful for readers with dyslexia or low vision.';
+$string['a11yreducemotion'] = 'Disable animations';
+$string['a11yreducemotion_desc'] = 'Stops the animated navigation bar gradient and all transitions, for every user.';
+$string['printstyles'] = 'Print-friendly pages';
+$string['printstyles_desc'] = 'When a page is printed, only its content is kept (no menus, drawers or buttons), in black on white, with collapsed sections expanded. Only affects printing.';

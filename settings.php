@@ -209,4 +209,60 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configcheckbox($name, $title, $description, '1');
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
+
+    // Accessibilité et lisibilité (1.4.0) : voir
+    // theme_obin_get_accessibility_scss() dans lib.php. Tout est désactivé
+    // par défaut (sauf la feuille d'impression, qui n'agit qu'à
+    // l'impression) : la mise à jour ne change rien à l'affichage existant.
+    $name = 'theme_obin/a11yheading';
+    $title = get_string('a11yheading', 'theme_obin');
+    $description = get_string('a11yheading_desc', 'theme_obin');
+    $settings->add(new admin_setting_heading($name, $title, $description));
+
+    $name = 'theme_obin/a11yfocus';
+    $title = get_string('a11yfocus', 'theme_obin');
+    $description = get_string('a11yfocus_desc', 'theme_obin');
+    $setting = new admin_setting_configcheckbox($name, $title, $description, '0');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
+    $name = 'theme_obin/a11yunderline';
+    $title = get_string('a11yunderline', 'theme_obin');
+    $description = get_string('a11yunderline_desc', 'theme_obin');
+    $setting = new admin_setting_configcheckbox($name, $title, $description, '0');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
+    $name = 'theme_obin/a11ytextsize';
+    $title = get_string('a11ytextsize', 'theme_obin');
+    $description = get_string('a11ytextsize_desc', 'theme_obin');
+    $choices = [
+        '100' => get_string('a11ytextsize_100', 'theme_obin'),
+        '112' => get_string('a11ytextsize_112', 'theme_obin'),
+        '125' => get_string('a11ytextsize_125', 'theme_obin'),
+    ];
+    $setting = new admin_setting_configselect($name, $title, $description, '100', $choices);
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
+    $name = 'theme_obin/a11yspacing';
+    $title = get_string('a11yspacing', 'theme_obin');
+    $description = get_string('a11yspacing_desc', 'theme_obin');
+    $setting = new admin_setting_configcheckbox($name, $title, $description, '0');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
+    $name = 'theme_obin/a11yreducemotion';
+    $title = get_string('a11yreducemotion', 'theme_obin');
+    $description = get_string('a11yreducemotion_desc', 'theme_obin');
+    $setting = new admin_setting_configcheckbox($name, $title, $description, '0');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
+
+    $name = 'theme_obin/printstyles';
+    $title = get_string('printstyles', 'theme_obin');
+    $description = get_string('printstyles_desc', 'theme_obin');
+    $setting = new admin_setting_configcheckbox($name, $title, $description, '1');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
 }

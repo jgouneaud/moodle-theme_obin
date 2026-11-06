@@ -76,3 +76,21 @@ $string['statbadges'] = 'Badges délivrés';
 $string['statcompletion'] = 'Taux de réussite';
 $string['statteachers'] = 'Formateurs';
 
+// Accessibilité et lisibilité (1.4.0).
+$string['a11yheading'] = 'Accessibilité et lisibilité';
+$string['a11yheading_desc'] = 'Réglages facultatifs pour rendre le site plus facile à lire et à utiliser au clavier. Ils sont tous désactivés par défaut : la mise à jour du thème ne change rien à un site existant. Le thème respecte toujours la préférence « réduire les animations » de l\'appareil de l\'utilisateur.';
+$string['a11yfocus'] = 'Contour de focus renforcé';
+$string['a11yfocus_desc'] = 'Affiche un contour sombre épais avec un halo clair autour de l\'élément sélectionné au clavier (touche Tab). Lisible sur tous les fonds, y compris en mode sombre.';
+$string['a11yunderline'] = 'Toujours souligner les liens';
+$string['a11yunderline_desc'] = 'Souligne les liens du contenu des pages et du pied de page, pour qu\'ils ne soient pas repérables uniquement par leur couleur.';
+$string['a11ytextsize'] = 'Taille du texte';
+$string['a11ytextsize_desc'] = 'Agrandit l\'ensemble du texte du site.';
+$string['a11ytextsize_100'] = 'Normale (100 %)';
+$string['a11ytextsize_112'] = 'Grande (112,5 %)';
+$string['a11ytextsize_125'] = 'Très grande (125 %)';
+$string['a11yspacing'] = 'Espacement du texte augmenté';
+$string['a11yspacing_desc'] = 'Augmente l\'interligne et l\'espace entre les paragraphes, les lettres et les mots dans le contenu des pages. Utile pour les personnes dyslexiques ou malvoyantes.';
+$string['a11yreducemotion'] = 'Désactiver les animations';
+$string['a11yreducemotion_desc'] = 'Arrête le dégradé animé de la barre de navigation et toutes les transitions, pour tous les utilisateurs.';
+$string['printstyles'] = 'Pages adaptées à l\'impression';
+$string['printstyles_desc'] = 'À l\'impression d\'une page, seul son contenu est conservé (sans menus, tiroirs ni boutons), en noir sur blanc, avec les sections repliées dépliées. N\'agit que sur l\'impression.';

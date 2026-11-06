@@ -17,6 +17,8 @@ Ce thème applique la charte graphique officielle de l'association (couleurs, ty
 - Icônes des menus d'administration configurables depuis *Administration du site > Apparence > OBIN* : aucune (texte seul, comportement natif de Boost), emoji (apparence historique du thème) ou pictogrammes SVG dessinés pour ce thème (monochromes, suivent la couleur de marque).
 - Bannière de page d'accueil personnalisable (photo, titre, sous-titre) : une ou plusieurs photos peuvent être déposées, avec un diaporama automatique en fondu enchaîné à partir de deux photos.
 - Section "chiffres clés" affichée sous la bannière (nombre de cours, d'apprenants, d'activités, et un 4e chiffre choisi automatiquement selon ce que le site utilise réellement : badges délivrés, taux de réussite ou nombre de formateurs), activable/désactivable depuis les réglages.
+- Section *Accessibilité et lisibilité* (depuis la 1.4.0) : contour de focus renforcé, liens toujours soulignés, taille du texte (100 %, 112,5 % ou 125 %), espacement du texte augmenté, désactivation des animations. Tout est désactivé par défaut. Le thème respecte toujours la préférence « réduire les animations » de l'appareil.
+- Pages adaptées à l'impression (depuis la 1.4.0, activé par défaut) : seul le contenu est imprimé, sans menus ni boutons, en noir sur blanc, avec les sections repliées dépliées.
 
 ## Installation
 
